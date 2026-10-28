@@ -1,26 +1,297 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  /* Design-system semantic tokens, usable as bg-fill-1, text-success-text, ... */
+  --color-fill-1: var(--fill-1);
+  --color-fill-2: var(--fill-2);
+  --color-fill-3: var(--fill-3);
+  --color-separator: var(--separator);
+  --color-raised: var(--surface-raised);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-text-3: var(--text-3);
+  --color-success: var(--success);
+  --color-success-text: var(--success-text);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-text: var(--warning-text);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-text: var(--info-text);
+  --color-info-soft: var(--info-soft);
+  --color-danger-text: var(--danger-text);
+  --color-danger-soft: var(--danger-soft);
+
+  /* Radii: 6 / 10 / 14 / 20 / 28 / 36 / pill, derived from --radius (14px). */
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 2);
+  --radius-3xl: calc(var(--radius) * 2.6);
+  --radius-4xl: calc(var(--radius) * 2.6);
+
+  --shadow-sm: var(--ds-shadow-sm);
+  --shadow-md: var(--ds-shadow-md);
+  --shadow-lg: var(--ds-shadow-lg);
+  --shadow-glass: var(--ds-shadow-glass);
+  --shadow-accent: var(--ds-shadow-accent);
+
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Food Combos design system structure (tokens/*.css: semantic keys, glass, fills,
+ * radii, shadows) carrying Brújula's original colors: verdemar teal #0f6e62 on
+ * bone #f5f4ef with ink #12211d text; dark mode uses the lightened #4fa79a.
+ * Mapped onto shadcn variable names so every ui/ component picks it up.
+ * Mobile uses the same values (mobile/src/theme/tokens.ts).
+ */
+:root {
+  --teal-50: #eef6f4;
+  --teal-100: #dceeea;
+  --teal-200: #b8dcd5;
+  --teal-300: #85c0b6;
+  --teal-400: #4fa79a;
+  --teal-500: #0f6e62;
+  --teal-600: #0c5c52;
+  --teal-700: #0b5148;
+
+  --accent-hover: #0c5c52;
+  --accent-press: #0b5148;
+  --accent-text: #0b5148;
+  --accent-soft: #dceeea;
+  --on-accent: #ffffff;
+
+  --surface-card: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-glass: rgba(255, 255, 255, 0.62);
+  --surface-glass-strong: rgba(255, 255, 255, 0.8);
+  --glass-border: rgba(255, 255, 255, 0.7);
+
+  --text-1: #12211d;
+  --text-2: #4a5c57;
+  --text-3: #7c8c86;
+
+  --fill-1: rgba(18, 33, 29, 0.06);
+  --fill-2: rgba(18, 33, 29, 0.1);
+  --fill-3: rgba(18, 33, 29, 0.16);
+  --separator: rgba(18, 33, 29, 0.1);
+  --border-1: rgba(18, 33, 29, 0.14);
+  --focus-ring: rgba(15, 110, 98, 0.45);
+
+  --danger: #d64545;
+  --danger-text: #c43e3e;
+  --danger-soft: #fbe3e3;
+  --warning: #e8a33d;
+  --warning-text: #9a5b06;
+  --warning-soft: #fcebcb;
+  --info: #3b5fe0;
+  --info-text: #2f4fc2;
+  --info-soft: #e6eeff;
+  --success: #1e8a3c;
+  --success-text: #176b2f;
+  --success-soft: #e1f5e6;
+  --scrim: rgba(10, 20, 17, 0.36);
+
+  --ds-shadow-sm: 0 1px 2px rgba(18, 33, 29, 0.06), 0 1px 1px rgba(18, 33, 29, 0.04);
+  --ds-shadow-md: 0 4px 16px rgba(18, 33, 29, 0.08), 0 1px 3px rgba(18, 33, 29, 0.06);
+  --ds-shadow-lg: 0 18px 48px rgba(18, 33, 29, 0.16), 0 4px 12px rgba(18, 33, 29, 0.08);
+  --ds-shadow-glass: 0 8px 32px rgba(18, 33, 29, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  --ds-shadow-accent: 0 6px 18px rgba(15, 110, 98, 0.35);
+
+  /* shadcn mapping */
+  --background: #f5f4ef;
+  --foreground: var(--text-1);
+  --card: var(--surface-card);
+  --card-foreground: var(--text-1);
+  --popover: var(--surface-raised);
+  --popover-foreground: var(--text-1);
+  --primary: var(--teal-500);
+  --primary-foreground: var(--on-accent);
+  --secondary: var(--accent-soft);
+  --secondary-foreground: var(--accent-text);
+  --muted: var(--fill-1);
+  --muted-foreground: var(--text-2);
+  --accent: var(--fill-1);
+  --accent-foreground: var(--text-1);
+  --destructive: var(--danger);
+  --border: var(--separator);
+  --input: var(--border-1);
+  --ring: var(--teal-500);
+  --chart-1: #0f6e62;
+  --chart-2: #d9663f;
+  --chart-3: #1e8a3c;
+  --chart-4: #7c8c86;
+  --chart-5: #4a5c57;
+  --radius: 0.875rem;
+  --sidebar: var(--surface-glass);
+  --sidebar-foreground: var(--text-1);
+  --sidebar-primary: var(--teal-500);
+  --sidebar-primary-foreground: var(--on-accent);
+  --sidebar-accent: var(--fill-1);
+  --sidebar-accent-foreground: var(--text-1);
+  --sidebar-border: var(--separator);
+  --sidebar-ring: var(--teal-500);
+}
+
+.dark {
+  --accent-hover: #85c0b6;
+  --accent-press: #0f6e62;
+  --accent-text: #85c0b6;
+  --accent-soft: rgba(79, 167, 154, 0.16);
+  --on-accent: #0b1613;
+
+  --surface-card: #12211d;
+  --surface-raised: #1b2c27;
+  --surface-glass: rgba(27, 44, 39, 0.58);
+  --surface-glass-strong: rgba(27, 44, 39, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.12);
+
+  --text-1: #f5f4ef;
+  --text-2: #b4c5bf;
+  --text-3: #7e9990;
+
+  --fill-1: rgba(255, 255, 255, 0.07);
+  --fill-2: rgba(255, 255, 255, 0.11);
+  --fill-3: rgba(255, 255, 255, 0.17);
+  --separator: rgba(255, 255, 255, 0.1);
+  --border-1: rgba(255, 255, 255, 0.14);
+  --focus-ring: rgba(79, 167, 154, 0.5);
+
+  --danger-text: #f0908a;
+  --danger-soft: rgba(226, 114, 107, 0.16);
+  --warning-text: #f2be72;
+  --warning-soft: rgba(232, 163, 61, 0.16);
+  --info-text: #9db1f6;
+  --info-soft: rgba(111, 140, 240, 0.16);
+  --success-text: #7edb98;
+  --success-soft: rgba(95, 201, 125, 0.16);
+  --scrim: rgba(0, 0, 0, 0.55);
+
+  --ds-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --ds-shadow-lg: 0 18px 48px rgba(0, 0, 0, 0.55);
+  --ds-shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+
+  --background: #0e1815;
+  --primary: var(--teal-400);
+  --ring: var(--teal-400);
+  --chart-1: #4fa79a;
+  --chart-2: #e08a67;
+  --chart-3: #5fc97d;
+  --chart-4: #8fa39c;
+  --chart-5: #b7c9c3;
+  --sidebar-primary: var(--teal-400);
+  --sidebar-ring: var(--teal-400);
+}
+
+/* The system's signature material. Use over content only, never glass-on-glass. */
+@utility glass {
+  background: var(--surface-glass);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--ds-shadow-glass);
+}
+
+@utility glass-strong {
+  background: var(--surface-glass-strong);
+  -webkit-backdrop-filter: saturate(200%) blur(40px);
+  backdrop-filter: saturate(200%) blur(40px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--ds-shadow-glass);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* No visible scrollbars anywhere; scrolling itself (wheel, touch, keys) is unchanged. */
+  * {
+    scrollbar-width: none;
+  }
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  html {
+    @apply font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    @apply bg-background text-foreground;
+    /* One soft radial wash of the accent at the top so glass has something to refract. */
+    background-image: radial-gradient(
+      90% 360px at 50% 0%,
+      color-mix(in oklab, var(--primary) 12%, transparent),
+      transparent 100%
+    );
+    background-repeat: no-repeat;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-bold;
+  }
+  h1 {
+    letter-spacing: -0.03em;
+  }
+  h2 {
+    letter-spacing: -0.025em;
+  }
+  h3,
+  h4 {
+    letter-spacing: -0.02em;
+  }
+  a {
+    transition: color 120ms var(--ease-out);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
