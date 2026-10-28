@@ -10,6 +10,7 @@ import { BackButton } from "@/components/layout/back-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { STRIPE_ENABLED } from "@/lib/config";
 import { getErrorMessage } from "@/lib/errors";
 import {
   useCreateCheckoutSessionMutation,
@@ -118,7 +119,7 @@ export default function BillingPage() {
                   <Badge className="self-start">
                     {t("billing.currentPlanLabel")}
                   </Badge>
-                ) : isOwner && tier !== "free" ? (
+                ) : STRIPE_ENABLED && isOwner && tier !== "free" ? (
                   <Button
                     disabled={busy !== null}
                     onClick={() => upgrade(tier)}
@@ -135,13 +136,13 @@ export default function BillingPage() {
           {isOwner ? (
             <div className="flex flex-col gap-3">
               <Button
-                variant="secondary"
+                variant={STRIPE_ENABLED ? "secondary" : "default"}
                 nativeButton={false}
                 render={<Link href="/plans" />}
               >
                 {t("plans.payTransfermovil")}
               </Button>
-              {company.stripeCustomerId ? (
+              {STRIPE_ENABLED && company.stripeCustomerId ? (
                 <Button
                   variant="outline"
                   disabled={busy !== null}
