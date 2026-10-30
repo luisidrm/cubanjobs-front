@@ -14,8 +14,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import Session from "supertokens-web-js/recipe/session";
 import { toast } from "sonner";
+import Session from "supertokens-web-js/recipe/session";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Chip } from "@/components/ui/chip";
@@ -34,6 +34,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { getErrorMessage } from "@/lib/errors";
 import { daysUntil, isEmployeePlanActive } from "@/lib/plan-status";
+import { useSkillLabel } from "@/lib/skills";
 import { appendFilePart } from "@/lib/upload";
 import {
   useAddExperienceMutation,
@@ -61,9 +62,22 @@ interface ExperienceDraft {
   contact: string;
 }
 
-const EMPTY_DRAFT: ExperienceDraft = { title: "", organization: "", description: "", contact: "" };
+const EMPTY_DRAFT: ExperienceDraft = {
+  title: "",
+  organization: "",
+  description: "",
+  contact: "",
+};
 
-function Section({ title, action, children }: { title: string; action?: React.ReactNode; children: React.ReactNode }) {
+function Section({
+  title,
+  action,
+  children,
+}: {
+  title: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <section className="flex flex-col gap-3 rounded-xl bg-card p-5 ring-1 ring-separator">
       <div className="flex items-center justify-between gap-3">
@@ -81,16 +95,19 @@ export default function ProfilePage() {
   const { data: me, isLoading, isError, refetch } = useGetMeQuery();
 
   const [updateProfile, { isLoading: saving }] = useUpdateProfileMutation();
-  const [uploadAvatar, { isLoading: uploadingAvatar }] = useUploadAvatarMutation();
+  const [uploadAvatar, { isLoading: uploadingAvatar }] =
+    useUploadAvatarMutation();
   const [uploadCv, { isLoading: uploadingCv }] = useUploadCvMutation();
   const [getCvUrl] = useLazyGetCvUrlQuery();
   const [addSkill, { isLoading: addingSkill }] = useAddSkillMutation();
   const [removeSkill] = useRemoveSkillMutation();
   const [addExperience, { isLoading: addingExp }] = useAddExperienceMutation();
-  const [updateExperience, { isLoading: updatingExp }] = useUpdateExperienceMutation();
+  const [updateExperience, { isLoading: updatingExp }] =
+    useUpdateExperienceMutation();
   const [deleteExperience] = useDeleteExperienceMutation();
   const [deleteAccount, { isLoading: deleting }] = useDeleteAccountMutation();
   const { data: catalog } = useGetSkillsCatalogQuery();
+  const skillLabel = useSkillLabel();
 
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -99,7 +116,9 @@ export default function ProfilePage() {
   const [location, setLocation] = useState("");
   const [linkedin, setLinkedin] = useState("");
   const [skillText, setSkillText] = useState("");
-  const [expEditing, setExpEditing] = useState<WorkExperience | "new" | null>(null);
+  const [expEditing, setExpEditing] = useState<WorkExperience | "new" | null>(
+    null,
+  );
   const [draft, setDraft] = useState<ExperienceDraft>(EMPTY_DRAFT);
   const [expDelete, setExpDelete] = useState<WorkExperience | null>(null);
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
@@ -144,7 +163,10 @@ export default function ProfilePage() {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
-    if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > MAX_IMAGE_BYTES) {
+    if (
+      !/^image\/(jpeg|png|webp)$/.test(file.type) ||
+      file.size > MAX_IMAGE_BYTES
+    ) {
       toast.error(t("profile.uploadError"));
       return;
     }
@@ -276,11 +298,14 @@ export default function ProfilePage() {
     );
   }
 
-  const fullName = [me.firstName, me.lastName].filter(Boolean).join(" ") || me.email;
+  const fullName =
+    [me.firstName, me.lastName].filter(Boolean).join(" ") || me.email;
   const planActive = isEmployeePlanActive(me);
   const planDays = daysUntil(me.planExpiresAt);
   const existingSkills = new Set(me.skills.map((s) => s.skill.toLowerCase()));
-  const suggestions = (catalog ?? []).filter((c) => !existingSkills.has(c.name.toLowerCase())).slice(0, 200);
+  const suggestions = (catalog ?? [])
+    .filter((c) => !existingSkills.has(c.name.toLowerCase()))
+    .slice(0, 200);
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-5 px-4 pt-8 pb-16 sm:px-6">
@@ -291,7 +316,11 @@ export default function ProfilePage() {
           <div className="grid size-20 place-items-center overflow-hidden rounded-full bg-accent-soft text-2xl font-bold text-accent-text">
             {me.profilePictureUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={me.profilePictureUrl} alt="" className="size-full object-cover" />
+              <img
+                src={me.profilePictureUrl}
+                alt=""
+                className="size-full object-cover"
+              />
             ) : (
               fullName.charAt(0).toUpperCase()
             )}
@@ -312,7 +341,9 @@ export default function ProfilePage() {
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-xl font-semibold">{fullName}</p>
-          <p className="truncate text-[15px] text-muted-foreground">{me.email}</p>
+          <p className="truncate text-[15px] text-muted-foreground">
+            {me.email}
+          </p>
         </div>
       </section>
 
@@ -329,16 +360,27 @@ export default function ProfilePage() {
             {planActive
               ? me.planExpiresAt
                 ? t("plans.activeUntil", {
-                    date: new Date(me.planExpiresAt).toLocaleDateString(i18n.language, {
-                      day: "numeric",
-                      month: "long",
-                    }),
+                    date: new Date(me.planExpiresAt).toLocaleDateString(
+                      i18n.language,
+                      {
+                        day: "numeric",
+                        month: "long",
+                      },
+                    ),
                   })
                 : t("plans.noExpiry")
               : t("plans.profileRow")}
           </span>
         </span>
-        <Badge variant={planActive ? (planDays !== null && planDays <= 3 ? "warning" : "success") : "ghost"}>
+        <Badge
+          variant={
+            planActive
+              ? planDays !== null && planDays <= 3
+                ? "warning"
+                : "success"
+              : "ghost"
+          }
+        >
           {planActive ? t("plans.paid") : t("plans.free")}
         </Badge>
       </Link>
@@ -347,12 +389,26 @@ export default function ProfilePage() {
         <form onSubmit={handleSave} className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="p-first">{t("profile.editProfile.firstName")}</Label>
-              <Input id="p-first" value={firstName} onChange={(e) => setFirstName(e.target.value)} maxLength={100} />
+              <Label htmlFor="p-first">
+                {t("profile.editProfile.firstName")}
+              </Label>
+              <Input
+                id="p-first"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                maxLength={100}
+              />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="p-last">{t("profile.editProfile.lastName")}</Label>
-              <Input id="p-last" value={lastName} onChange={(e) => setLastName(e.target.value)} maxLength={100} />
+              <Label htmlFor="p-last">
+                {t("profile.editProfile.lastName")}
+              </Label>
+              <Input
+                id="p-last"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                maxLength={100}
+              />
             </div>
           </div>
           <div className="flex flex-col gap-2">
@@ -376,7 +432,9 @@ export default function ProfilePage() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="p-location">{t("profile.editProfile.location")}</Label>
+            <Label htmlFor="p-location">
+              {t("profile.editProfile.location")}
+            </Label>
             <Input
               id="p-location"
               value={location}
@@ -386,7 +444,9 @@ export default function ProfilePage() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            <Label htmlFor="p-linkedin">{t("profile.editProfile.linkedin")}</Label>
+            <Label htmlFor="p-linkedin">
+              {t("profile.editProfile.linkedin")}
+            </Label>
             <Input
               id="p-linkedin"
               type="url"
@@ -421,8 +481,17 @@ export default function ProfilePage() {
             render={
               <label>
                 <Upload />
-                {uploadingCv ? t("onboarding.uploading") : me.cvUrl ? t("onboarding.replace") : t("onboarding.uploadCv")}
-                <input type="file" accept="application/pdf" className="sr-only" onChange={handleCv} />
+                {uploadingCv
+                  ? t("onboarding.uploading")
+                  : me.cvUrl
+                    ? t("onboarding.replace")
+                    : t("onboarding.uploadCv")}
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  className="sr-only"
+                  onChange={handleCv}
+                />
               </label>
             }
           />
@@ -435,7 +504,11 @@ export default function ProfilePage() {
             <Chip
               key={s.id}
               variant="removable"
-              label={s.yearsExperience ? `${s.skill} · ${s.yearsExperience}` : s.skill}
+              label={
+                s.yearsExperience
+                  ? `${skillLabel(s.skill)} · ${s.yearsExperience}`
+                  : skillLabel(s.skill)
+              }
               removeLabel={t("onboarding.remove")}
               onRemove={() => removeSkill(s.id)}
             />
@@ -452,7 +525,7 @@ export default function ProfilePage() {
           />
           <datalist id="skill-suggestions">
             {suggestions.map((c) => (
-              <option key={c.id} value={c.name} />
+              <option key={c.id} value={skillLabel(c.name)} />
             ))}
           </datalist>
           <Button type="submit" disabled={!skillText.trim() || addingSkill}>
@@ -465,28 +538,46 @@ export default function ProfilePage() {
       <Section
         title={t("profile.workExperience.title")}
         action={
-          <Button variant="secondary" size="sm" onClick={() => openExperience("new")}>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => openExperience("new")}
+          >
             <Plus />
             {t("profile.workExperience.add")}
           </Button>
         }
       >
         {me.experience.length === 0 ? (
-          <p className="text-[15px] text-muted-foreground">{t("profile.workExperience.count", { count: 0 })}</p>
+          <p className="text-[15px] text-muted-foreground">
+            {t("profile.workExperience.count", { count: 0 })}
+          </p>
         ) : (
           <ul className="flex flex-col divide-y divide-separator">
             {me.experience.map((exp) => (
-              <li key={exp.id} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
+              <li
+                key={exp.id}
+                className="flex items-start gap-3 py-3 first:pt-0 last:pb-0"
+              >
                 <div className="min-w-0 flex-1">
                   <p className="font-semibold">{exp.title}</p>
                   {exp.organization ? (
-                    <p className="text-[15px] text-muted-foreground">{exp.organization}</p>
+                    <p className="text-[15px] text-muted-foreground">
+                      {exp.organization}
+                    </p>
                   ) : null}
                   {exp.description ? (
-                    <p className="mt-1 whitespace-pre-line text-[14px] text-text-3">{exp.description}</p>
+                    <p className="mt-1 whitespace-pre-line text-[14px] text-text-3">
+                      {exp.description}
+                    </p>
                   ) : null}
                 </div>
-                <Button variant="ghost" size="icon" aria-label={t("employer.edit")} onClick={() => openExperience(exp)}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label={t("employer.edit")}
+                  onClick={() => openExperience(exp)}
+                >
                   <Pencil />
                 </Button>
                 <Button
@@ -504,12 +595,18 @@ export default function ProfilePage() {
       </Section>
 
       <Section title={t("profile.deleteAccount")}>
-        <Button variant="destructive" onClick={() => setConfirmDeleteAccount(true)}>
+        <Button
+          variant="destructive"
+          onClick={() => setConfirmDeleteAccount(true)}
+        >
           {t("profile.deleteAccount")}
         </Button>
       </Section>
 
-      <Dialog open={expEditing !== null} onOpenChange={(o) => !o && setExpEditing(null)}>
+      <Dialog
+        open={expEditing !== null}
+        onOpenChange={(o) => !o && setExpEditing(null)}
+      >
         <DialogContent>
           <DialogHeader>
             <DialogTitle>{t("profile.workExperience.title")}</DialogTitle>
@@ -524,14 +621,18 @@ export default function ProfilePage() {
             />
             <Input
               value={draft.organization}
-              onChange={(e) => setDraft({ ...draft, organization: e.target.value })}
+              onChange={(e) =>
+                setDraft({ ...draft, organization: e.target.value })
+              }
               placeholder={t("profile.workExperience.organizationPlaceholder")}
               aria-label={t("profile.workExperience.organizationPlaceholder")}
               maxLength={255}
             />
             <Textarea
               value={draft.description}
-              onChange={(e) => setDraft({ ...draft, description: e.target.value })}
+              onChange={(e) =>
+                setDraft({ ...draft, description: e.target.value })
+              }
               placeholder={t("profile.workExperience.descriptionPlaceholder")}
               aria-label={t("profile.workExperience.descriptionPlaceholder")}
             />
@@ -542,12 +643,21 @@ export default function ProfilePage() {
               aria-label={t("profile.workExperience.contactPlaceholder")}
               maxLength={255}
             />
-            <p className="pl-1 text-[13px] text-text-3">{t("profile.workExperience.contactHint")}</p>
+            <p className="pl-1 text-[13px] text-text-3">
+              {t("profile.workExperience.contactHint")}
+            </p>
             <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
-              <Button type="button" variant="outline" onClick={() => setExpEditing(null)}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setExpEditing(null)}
+              >
                 {t("profile.workExperience.cancel")}
               </Button>
-              <Button type="submit" disabled={!draft.title.trim() || addingExp || updatingExp}>
+              <Button
+                type="submit"
+                disabled={!draft.title.trim() || addingExp || updatingExp}
+              >
                 {t("profile.workExperience.save")}
               </Button>
             </DialogFooter>
@@ -555,11 +665,18 @@ export default function ProfilePage() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={expDelete !== null} onOpenChange={(o) => !o && setExpDelete(null)}>
+      <Dialog
+        open={expDelete !== null}
+        onOpenChange={(o) => !o && setExpDelete(null)}
+      >
         <DialogContent showCloseButton={false} className="text-center">
           <DialogHeader className="items-center">
-            <DialogTitle>{t("profile.workExperience.confirmDeleteTitle")}</DialogTitle>
-            <DialogDescription>{t("profile.workExperience.confirmDeleteMessage")}</DialogDescription>
+            <DialogTitle>
+              {t("profile.workExperience.confirmDeleteTitle")}
+            </DialogTitle>
+            <DialogDescription>
+              {t("profile.workExperience.confirmDeleteMessage")}
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
             <Button variant="outline" onClick={() => setExpDelete(null)}>
@@ -572,17 +689,29 @@ export default function ProfilePage() {
         </DialogContent>
       </Dialog>
 
-      <Dialog open={confirmDeleteAccount} onOpenChange={setConfirmDeleteAccount}>
+      <Dialog
+        open={confirmDeleteAccount}
+        onOpenChange={setConfirmDeleteAccount}
+      >
         <DialogContent showCloseButton={false} className="text-center">
           <DialogHeader className="items-center">
             <DialogTitle>{t("profile.deleteAccountConfirmTitle")}</DialogTitle>
-            <DialogDescription>{t("profile.deleteAccountConfirmMessage")}</DialogDescription>
+            <DialogDescription>
+              {t("profile.deleteAccountConfirmMessage")}
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
-            <Button variant="outline" onClick={() => setConfirmDeleteAccount(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setConfirmDeleteAccount(false)}
+            >
               {t("profile.cancel")}
             </Button>
-            <Button variant="destructive" disabled={deleting} onClick={handleDeleteAccount}>
+            <Button
+              variant="destructive"
+              disabled={deleting}
+              onClick={handleDeleteAccount}
+            >
               {t("profile.deleteAccount")}
             </Button>
           </DialogFooter>

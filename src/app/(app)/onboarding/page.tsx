@@ -15,11 +15,10 @@ import {
   Wrench,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { homeFor } from "@/lib/home";
 import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ActionBar } from "@/components/ui/action-bar";
 import { BrandLogoMark } from "@/components/layout/brand-mark";
+import { ActionBar } from "@/components/ui/action-bar";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Chip } from "@/components/ui/chip";
@@ -28,6 +27,8 @@ import { Label } from "@/components/ui/label";
 import { Segmented } from "@/components/ui/segmented";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { homeFor } from "@/lib/home";
+import { skillMatches, useSkillLabel } from "@/lib/skills";
 import { showErrorToast } from "@/lib/toast";
 import { appendFilePart } from "@/lib/upload";
 import {
@@ -76,6 +77,7 @@ export default function OnboardingPage() {
   const [search, setSearch] = useState("");
   const [customSkill, setCustomSkill] = useState("");
   const [addSkill, { isLoading: addingSkill }] = useAddSkillMutation();
+  const skillLabel = useSkillLabel();
   const [removeSkill] = useRemoveSkillMutation();
 
   const addedSkills = useMemo(() => me?.skills ?? [], [me]);
@@ -86,9 +88,7 @@ export default function OnboardingPage() {
   const filteredCatalog = useMemo(() => {
     if (!catalog) return [];
     const q = search.trim().toLowerCase();
-    return q
-      ? catalog.filter((c) => c.name.toLowerCase().includes(q))
-      : catalog;
+    return q ? catalog.filter((c) => skillMatches(c, q)) : catalog;
   }, [catalog, search]);
 
   async function handleToggleSkill(name: string) {
@@ -363,7 +363,7 @@ export default function OnboardingPage() {
               {filteredCatalog.map((item) => (
                 <Chip
                   key={item.id}
-                  label={item.name}
+                  label={skillLabel(item.name)}
                   selected={addedSkillNames.has(item.name.toLowerCase())}
                   disabled={addingSkill}
                   onClick={() => handleToggleSkill(item.name)}
@@ -401,8 +401,8 @@ export default function OnboardingPage() {
                     <Chip
                       key={sk.id}
                       variant="removable"
-                      label={sk.skill}
-                      removeLabel={`${t("onboarding.remove")} ${sk.skill}`}
+                      label={skillLabel(sk.skill)}
+                      removeLabel={`${t("onboarding.remove")} ${skillLabel(sk.skill)}`}
                       onRemove={() => removeSkill(sk.id)}
                     />
                   ))}
@@ -503,9 +503,7 @@ export default function OnboardingPage() {
                 disabled={resending || resent}
               >
                 {resent ? <Check /> : null}
-                {resent
-                  ? t("verifyBanner.resent")
-                  : t("verifyBanner.resend")}
+                {resent ? t("verifyBanner.resent") : t("verifyBanner.resend")}
               </Button>
             </Card>
           </>

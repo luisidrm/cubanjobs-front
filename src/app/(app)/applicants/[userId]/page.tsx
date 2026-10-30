@@ -8,12 +8,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSkillLabel } from "@/lib/skills";
 import { useGetPublicProfileQuery } from "@/store/api/usersApi";
 
 /** Employer-facing view of an applicant (or talent-search result). */
 export default function ApplicantProfilePage() {
   const { t } = useTranslation();
   const { userId } = useParams<{ userId: string }>();
+  const skillLabel = useSkillLabel();
   const {
     data: profile,
     isLoading,
@@ -132,8 +134,8 @@ export default function ApplicantProfilePage() {
                     className="h-8 px-3 text-sm"
                   >
                     {s.yearsExperience
-                      ? `${s.skill} · ${s.yearsExperience}`
-                      : s.skill}
+                      ? `${skillLabel(s.skill)} · ${s.yearsExperience}`
+                      : skillLabel(s.skill)}
                   </Badge>
                 ))}
               </div>

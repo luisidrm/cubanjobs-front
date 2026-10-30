@@ -1,6 +1,13 @@
 "use client";
 
-import { ChevronRight, Lock, MapPin, Search, SearchX, WifiOff } from "lucide-react";
+import {
+  ChevronRight,
+  Lock,
+  MapPin,
+  Search,
+  SearchX,
+  WifiOff,
+} from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,6 +18,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { hasCandidateSearchAccess } from "@/lib/plans";
+import { useSkillLabel } from "@/lib/skills";
 import { useGetMyCompaniesQuery } from "@/store/api/companiesApi";
 import {
   useGetMeQuery,
@@ -22,7 +30,9 @@ import type { WorkerSearchFilters, WorkerSummary } from "@/types/user";
 const PAGE_SIZE = 24;
 
 function WorkerCard({ worker }: { worker: WorkerSummary }) {
-  const name = [worker.firstName, worker.lastName].filter(Boolean).join(" ") || "?";
+  const skillLabel = useSkillLabel();
+  const name =
+    [worker.firstName, worker.lastName].filter(Boolean).join(" ") || "?";
   return (
     <Link
       href={`/applicants/${worker.id}`}
@@ -32,7 +42,11 @@ function WorkerCard({ worker }: { worker: WorkerSummary }) {
         <div className="grid size-11 shrink-0 place-items-center overflow-hidden rounded-full bg-accent-soft text-lg font-bold text-accent-text">
           {worker.profilePictureUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={worker.profilePictureUrl} alt="" className="size-full object-cover" />
+            <img
+              src={worker.profilePictureUrl}
+              alt=""
+              className="size-full object-cover"
+            />
           ) : (
             name.charAt(0).toUpperCase()
           )}
@@ -49,13 +63,15 @@ function WorkerCard({ worker }: { worker: WorkerSummary }) {
         <ChevronRight className="size-[18px] shrink-0 text-text-3" />
       </div>
       {worker.bio ? (
-        <p className="line-clamp-2 text-[15px] text-muted-foreground">{worker.bio}</p>
+        <p className="line-clamp-2 text-[15px] text-muted-foreground">
+          {worker.bio}
+        </p>
       ) : null}
       {worker.skills.length > 0 ? (
         <div className="flex flex-wrap gap-2">
           {worker.skills.slice(0, 3).map((s) => (
             <Badge key={s.id} variant="secondary">
-              {s.skill}
+              {skillLabel(s.skill)}
             </Badge>
           ))}
         </div>
@@ -69,9 +85,10 @@ export default function TalentPage() {
   const { t } = useTranslation();
   const { data: me, isLoading: meLoading } = useGetMeQuery();
   const employer = me?.role === "employer";
-  const { data: companies, isLoading: companiesLoading } = useGetMyCompaniesQuery(undefined, {
-    skip: !employer,
-  });
+  const { data: companies, isLoading: companiesLoading } =
+    useGetMyCompaniesQuery(undefined, {
+      skip: !employer,
+    });
   const company = companies?.[0];
   const hasAccess = !!company && hasCandidateSearchAccess(company.planTier);
 
@@ -86,7 +103,10 @@ export default function TalentPage() {
     return () => clearTimeout(id);
   }, [input]);
 
-  const { data: skillsList } = useGetWorkerSkillsQuery(undefined, { skip: !hasAccess });
+  const { data: skillsList } = useGetWorkerSkillsQuery(undefined, {
+    skip: !hasAccess,
+  });
+  const skillLabel = useSkillLabel();
 
   const filters = useMemo<WorkerSearchFilters>(() => {
     const f: WorkerSearchFilters = { limit, offset: 0 };
@@ -170,7 +190,7 @@ export default function TalentPage() {
                 <Chip
                   key={skill}
                   variant="filter"
-                  label={skill}
+                  label={skillLabel(skill)}
                   selected={activeSkills.has(skill)}
                   onClick={() => toggleSkill(skill)}
                 />
