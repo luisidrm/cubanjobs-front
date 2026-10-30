@@ -198,7 +198,7 @@ export default function JobDetailPage() {
             ) : null}
           </div>
 
-          <Card className="gap-0 py-0">
+          <Card className="gap-0 px-0 py-0">
             <div className="flex flex-col gap-1 p-4">
               <p className="text-xs font-semibold tracking-[0.06em] text-text-3 uppercase">
                 {t("jobDetails.salary")}
