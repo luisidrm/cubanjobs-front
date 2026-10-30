@@ -823,5 +823,161 @@
       "notFound": "This post isn't available.",
       "by": "By {{name}}"
     }
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Jobs and talent in Cuba",
+      "title": "Find work. Find people.",
+      "titleAccent": "All in one place.",
+      "subtitle": "Brújula connects people looking for work with the companies that are hiring, with salaries in CUP, MLC or USD and payment by Transfermóvil.",
+      "cta": "Create your account",
+      "ctaSecondary": "Browse jobs",
+      "ctaSignedIn": "Open my account",
+      "note": "Creating an account and browsing is free. Applying to jobs needs an active plan.",
+      "sectorsTitle": "Work in every sector"
+    },
+    "sectors": {
+      "hospitality": "Hospitality",
+      "health": "Healthcare",
+      "education": "Education",
+      "tech": "Technology",
+      "construction": "Construction and trades",
+      "transport": "Transport and logistics",
+      "agriculture": "Agriculture",
+      "office": "Office and administration",
+      "arts": "Arts and media",
+      "legal": "Legal"
+    },
+    "problem": {
+      "eyebrow": "The problem",
+      "title": "Finding a job in Cuba is harder than it should be",
+      "subtitle": "Good opportunities exist, but the way people find them leaves too many of them unseen.",
+      "items": {
+        "scattered": {
+          "title": "Offers are scattered",
+          "text": "Jobs live in chat groups, social posts and word of mouth. They are easy to miss, impossible to search, and gone once the conversation moves on."
+        },
+        "trust": {
+          "title": "It is hard to know who to trust",
+          "text": "It is difficult to tell a real company from a scam, or a serious candidate from a profile with nothing behind it."
+        },
+        "payments": {
+          "title": "Payments do not fit",
+          "text": "Most online services assume an international card. In Cuba, prices are quoted in CUP, MLC and USD, and people pay with Transfermóvil."
+        },
+        "followUp": {
+          "title": "No one tells you what happened",
+          "text": "With slow and intermittent connections, nobody wants to check five places to learn whether an application was seen."
+        }
+      }
+    },
+    "offer": {
+      "eyebrow": "What we offer",
+      "title": "One platform, built around how people here actually work",
+      "seekers": {
+        "title": "For people looking for work",
+        "items": {
+          "search": "Search jobs and filter by currency, remote work and tags",
+          "profile": "Build a profile with your CV, work experience and skills, shown in Spanish or English",
+          "apply": "Apply and follow the status of every application",
+          "alerts": "Save jobs and get updates by notification and email",
+          "freelance": "Publish your services on the freelancer board, with photos and contact buttons"
+        }
+      },
+      "companies": {
+        "title": "For companies",
+        "items": {
+          "post": "Post jobs with the salary in CUP, MLC or USD and a cover image",
+          "review": "Review applicants and move each one through pending, reviewed, accepted or rejected",
+          "talent": "Search the talent directory by skill, name or location (Basic and Pro plans)",
+          "team": "Invite your team with a code and share the company plan",
+          "profile": "Get a public company page, and ask us to verify it"
+        }
+      },
+      "highlights": {
+        "verified": {
+          "title": "Verified companies",
+          "text": "Our team can verify a company, and verified companies show a badge."
+        },
+        "languages": {
+          "title": "Spanish and English",
+          "text": "The whole service, including skills and job categories, works in both languages."
+        },
+        "devices": {
+          "title": "Web and mobile",
+          "text": "Use it on the web or in the mobile app, with the same account on both."
+        }
+      }
+    },
+    "how": {
+      "eyebrow": "How it works",
+      "title": "From sign-up to a conversation in three steps",
+      "steps": {
+        "one": {
+          "title": "Create your account",
+          "text": "Sign up as a job seeker or as a company and complete your profile in a few minutes."
+        },
+        "two": {
+          "title": "Search or publish",
+          "text": "Explore jobs and apply, or publish an opening and receive applications in one place."
+        },
+        "three": {
+          "title": "Follow up and connect",
+          "text": "Track every step, and reach each other directly through the contact details people choose to share."
+        }
+      }
+    },
+    "pay": {
+      "eyebrow": "Plans and payment",
+      "title": "Pay the way people actually pay in Cuba",
+      "text": "Plans are paid with a Transfermóvil transfer. No international card is needed.",
+      "steps": {
+        "one": "Send the transfer to the account shown in the app",
+        "two": "Enter the confirmation number, and a screenshot if you like",
+        "three": "Our team checks it and activates your plan. You get a notification when it is approved"
+      },
+      "currenciesTitle": "Salaries in the currency the employer chooses",
+      "employees": {
+        "title": "Job seekers",
+        "free": "Free: browse jobs, save them and build your profile.",
+        "paid": "Paid plan: apply to jobs and use the freelancer board."
+      },
+      "employers": {
+        "title": "Companies",
+        "free": "Free to start, with a limited number of active jobs.",
+        "paid": "Basic and Pro: more active jobs, team seats and talent search."
+      },
+      "prices": "Plan prices are set in CUP and shown inside the app when you sign in."
+    },
+    "faq": {
+      "eyebrow": "Questions",
+      "title": "Frequently asked questions",
+      "items": {
+        "free": {
+          "q": "Is Brújula free?",
+          "a": "Creating an account, browsing jobs and saving them is free. Applying to jobs, posting on the freelancer board and higher company limits need a paid plan."
+        },
+        "pay": {
+          "q": "How do I pay for a plan?",
+          "a": "With a Transfermóvil transfer. You enter the confirmation number in the app, our team checks it, and your plan starts once it is approved."
+        },
+        "verified": {
+          "q": "How do I know a company is real?",
+          "a": "Our team can review and verify companies, and verified companies display a badge on their page."
+        },
+        "cv": {
+          "q": "Is my CV private?",
+          "a": "Yes. Your CV is stored privately and is only opened through temporary links, by companies you apply to."
+        },
+        "language": {
+          "q": "Does it work in Spanish?",
+          "a": "Yes. The web and the app work in Spanish and English, and skills appear in your language."
+        }
+      }
+    },
+    "final": {
+      "title": "Ready for your next opportunity?",
+      "text": "Join Brújula and put your profile or your openings in front of the right people."
+    }
   }
 }

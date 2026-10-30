@@ -2,15 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { homeFor } from "@/lib/home";
 import { useSession } from "@/lib/session";
 import { useGetMeQuery } from "@/store/api/usersApi";
 
 /**
- * Admins have no use for the public job board: whenever they land on "/"
- * (after signing in, from the logo, or via the auth-page bounce) send them to
- * the console. Everyone else sees the page untouched.
+ * "/" is the marketing page for visitors. Anyone already signed in (after
+ * signing in, from the logo, or via the auth-page bounce) goes straight to
+ * their own home instead: admins to the console, employers to their jobs,
+ * employees to the job board.
  */
-export function AdminHomeRedirect() {
+export function SignedInRedirect() {
   const router = useRouter();
   const { status } = useSession();
   const { data: me } = useGetMeQuery(undefined, {
@@ -18,8 +20,8 @@ export function AdminHomeRedirect() {
   });
 
   useEffect(() => {
-    if (me?.role === "admin") router.replace("/admin");
-  }, [me?.role, router]);
+    if (me) router.replace(homeFor(me.role));
+  }, [me, router]);
 
   return null;
 }

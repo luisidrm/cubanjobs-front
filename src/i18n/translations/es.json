@@ -823,5 +823,161 @@
       "notFound": "Esta publicación no está disponible.",
       "by": "Por {{name}}"
     }
+  },
+  "landing": {
+    "hero": {
+      "eyebrow": "Empleo y talento en Cuba",
+      "title": "Encuentra trabajo. Encuentra personas.",
+      "titleAccent": "Todo en un solo lugar.",
+      "subtitle": "Brújula conecta a quienes buscan trabajo con las empresas que contratan, con salarios en CUP, MLC o USD y pago por Transfermóvil.",
+      "cta": "Crea tu cuenta",
+      "ctaSecondary": "Ver empleos",
+      "ctaSignedIn": "Abrir mi cuenta",
+      "note": "Crear una cuenta y explorar es gratis. Para aplicar a empleos se necesita un plan activo.",
+      "sectorsTitle": "Trabajo en todos los sectores"
+    },
+    "sectors": {
+      "hospitality": "Gastronomía y hotelería",
+      "health": "Salud",
+      "education": "Educación",
+      "tech": "Tecnología",
+      "construction": "Construcción y oficios",
+      "transport": "Transporte y logística",
+      "agriculture": "Agricultura",
+      "office": "Oficina y administración",
+      "arts": "Arte y medios",
+      "legal": "Derecho"
+    },
+    "problem": {
+      "eyebrow": "El problema",
+      "title": "Encontrar trabajo en Cuba es más difícil de lo que debería",
+      "subtitle": "Las oportunidades existen, pero la forma de encontrarlas hace que muchas pasen desapercibidas.",
+      "items": {
+        "scattered": {
+          "title": "Las ofertas están dispersas",
+          "text": "Los empleos viven en grupos de chat, publicaciones en redes y el boca a boca. Son fáciles de perder, imposibles de buscar y desaparecen cuando la conversación sigue adelante."
+        },
+        "trust": {
+          "title": "Es difícil saber en quién confiar",
+          "text": "Cuesta distinguir una empresa real de una estafa, o a un candidato serio de un perfil sin nada detrás."
+        },
+        "payments": {
+          "title": "Los pagos no encajan",
+          "text": "La mayoría de los servicios en línea asumen una tarjeta internacional. En Cuba los precios se expresan en CUP, MLC y USD, y la gente paga con Transfermóvil."
+        },
+        "followUp": {
+          "title": "Nadie te dice qué pasó",
+          "text": "Con conexiones lentas e intermitentes, nadie quiere revisar cinco lugares para saber si vieron su solicitud."
+        }
+      }
+    },
+    "offer": {
+      "eyebrow": "Lo que ofrecemos",
+      "title": "Una plataforma pensada para cómo se trabaja aquí",
+      "seekers": {
+        "title": "Para quienes buscan trabajo",
+        "items": {
+          "search": "Busca empleos y filtra por moneda, trabajo remoto y etiquetas",
+          "profile": "Crea un perfil con tu CV, experiencia laboral y habilidades, en español o inglés",
+          "apply": "Aplica y sigue el estado de cada solicitud",
+          "alerts": "Guarda empleos y recibe novedades por notificación y correo",
+          "freelance": "Publica tus servicios en el tablón de freelancers, con fotos y botones de contacto"
+        }
+      },
+      "companies": {
+        "title": "Para empresas",
+        "items": {
+          "post": "Publica empleos con el salario en CUP, MLC o USD y una imagen de portada",
+          "review": "Revisa a los candidatos y muévelos entre pendiente, revisado, aceptado o rechazado",
+          "talent": "Busca en el directorio de talento por habilidad, nombre o ubicación (planes Basic y Pro)",
+          "team": "Invita a tu equipo con un código y compartan el plan de la empresa",
+          "profile": "Ten una página pública de la empresa y pide que la verifiquemos"
+        }
+      },
+      "highlights": {
+        "verified": {
+          "title": "Empresas verificadas",
+          "text": "Nuestro equipo puede verificar una empresa, y las verificadas muestran una insignia."
+        },
+        "languages": {
+          "title": "Español e inglés",
+          "text": "Todo el servicio, incluidas las habilidades y categorías de empleo, funciona en ambos idiomas."
+        },
+        "devices": {
+          "title": "Web y móvil",
+          "text": "Úsalo en la web o en la app móvil, con la misma cuenta en ambas."
+        }
+      }
+    },
+    "how": {
+      "eyebrow": "Cómo funciona",
+      "title": "Del registro a una conversación en tres pasos",
+      "steps": {
+        "one": {
+          "title": "Crea tu cuenta",
+          "text": "Regístrate como persona que busca trabajo o como empresa y completa tu perfil en pocos minutos."
+        },
+        "two": {
+          "title": "Busca o publica",
+          "text": "Explora empleos y aplica, o publica una vacante y recibe las solicitudes en un solo lugar."
+        },
+        "three": {
+          "title": "Da seguimiento y conecta",
+          "text": "Sigue cada paso y comuníquense directamente con los datos de contacto que cada quien decida compartir."
+        }
+      }
+    },
+    "pay": {
+      "eyebrow": "Planes y pago",
+      "title": "Paga como realmente se paga en Cuba",
+      "text": "Los planes se pagan con una transferencia por Transfermóvil. No hace falta una tarjeta internacional.",
+      "steps": {
+        "one": "Haz la transferencia a la cuenta que se muestra en la app",
+        "two": "Escribe el número de confirmación y, si quieres, adjunta una captura",
+        "three": "Nuestro equipo la revisa y activa tu plan. Recibes una notificación cuando se aprueba"
+      },
+      "currenciesTitle": "Salarios en la moneda que elige el empleador",
+      "employees": {
+        "title": "Personas que buscan trabajo",
+        "free": "Gratis: explora empleos, guárdalos y crea tu perfil.",
+        "paid": "Plan de pago: aplica a empleos y usa el tablón de freelancers."
+      },
+      "employers": {
+        "title": "Empresas",
+        "free": "Gratis para empezar, con un número limitado de empleos activos.",
+        "paid": "Basic y Pro: más empleos activos, puestos de equipo y búsqueda de talento."
+      },
+      "prices": "Los precios de los planes están en CUP y se muestran dentro de la app al iniciar sesión."
+    },
+    "faq": {
+      "eyebrow": "Preguntas",
+      "title": "Preguntas frecuentes",
+      "items": {
+        "free": {
+          "q": "¿Brújula es gratis?",
+          "a": "Crear una cuenta, explorar empleos y guardarlos es gratis. Aplicar a empleos, publicar en el tablón de freelancers y los límites mayores para empresas requieren un plan de pago."
+        },
+        "pay": {
+          "q": "¿Cómo pago un plan?",
+          "a": "Con una transferencia por Transfermóvil. Escribes el número de confirmación en la app, nuestro equipo lo revisa y tu plan empieza cuando se aprueba."
+        },
+        "verified": {
+          "q": "¿Cómo sé que una empresa es real?",
+          "a": "Nuestro equipo puede revisar y verificar empresas, y las verificadas muestran una insignia en su página."
+        },
+        "cv": {
+          "q": "¿Mi CV es privado?",
+          "a": "Sí. Tu CV se guarda de forma privada y solo se abre mediante enlaces temporales, por las empresas a las que aplicas."
+        },
+        "language": {
+          "q": "¿Funciona en español?",
+          "a": "Sí. La web y la app funcionan en español e inglés, y las habilidades aparecen en tu idioma."
+        }
+      }
+    },
+    "final": {
+      "title": "¿Listo para tu próxima oportunidad?",
+      "text": "Únete a Brújula y pon tu perfil o tus vacantes frente a las personas adecuadas."
+    }
   }
 }

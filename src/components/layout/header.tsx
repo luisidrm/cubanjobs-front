@@ -201,6 +201,8 @@ export function Header() {
             <>
               <Button
                 variant="ghost"
+                // The bottom tab bar already has Sign In on phones; keeping both overflowed the header.
+                className="max-sm:hidden"
                 nativeButton={false}
                 render={<Link href="/sign-in" />}
               >

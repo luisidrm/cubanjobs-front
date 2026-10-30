@@ -47,7 +47,7 @@ export default function AdminPaymentsPage() {
         ]}
       />
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-start">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_420px] xl:items-start">
         <div className="flex flex-col gap-3">
           {isLoading ? (
             <>
@@ -85,11 +85,11 @@ export default function AdminPaymentsPage() {
                 onClick={() => setSelected(p.id)}
                 aria-pressed={on}
                 className={cn(
-                  "flex flex-col gap-2.5 rounded-xl bg-card p-4 text-left shadow-sm transition-[transform,box-shadow] duration-200 ease-spring outline-none focus-visible:ring-4 focus-visible:ring-ring/45 active:scale-[0.99]",
+                  "flex w-full min-w-0 flex-col gap-2.5 rounded-xl bg-card p-4 text-left shadow-sm transition-[transform,box-shadow] duration-200 ease-spring outline-none focus-visible:ring-4 focus-visible:ring-ring/45 active:scale-[0.99]",
                   on ? "ring-2 ring-primary" : "ring-1 ring-separator hover:shadow-md",
                 )}
               >
-                <span className="flex items-center gap-3">
+                <span className="flex min-w-0 items-center gap-3">
                   <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent-text">
                     {p.audience === "employer" ? (
                       <Building2 className="size-5" />
@@ -105,14 +105,14 @@ export default function AdminPaymentsPage() {
                       {p.planName} · {t("plans.month", { count: p.months })}
                     </span>
                   </span>
-                  <span className="flex items-baseline gap-1">
+                  <span className="flex shrink-0 items-baseline gap-1">
                     <span className="text-lg font-bold tabular-nums">
                       {p.amountCup.toLocaleString()}
                     </span>
                     <span className="font-mono text-xs text-muted-foreground">CUP</span>
                   </span>
                 </span>
-                <span className="flex items-center justify-between gap-2 text-[13px]">
+                <span className="flex min-w-0 items-center justify-between gap-2 text-[13px]">
                   <span className="truncate font-mono text-muted-foreground">
                     {p.transferNumber}
                   </span>

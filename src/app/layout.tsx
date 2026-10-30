@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import "./globals.css";
 import { Providers } from "@/components/Provider"; // Import your providers
 
@@ -30,7 +30,16 @@ export default async function RootLayout({
   // the server render <html lang> and initial markup in the right language
   // instead of always defaulting to English, without adding a /[lang] route.
   const cookieStore = await cookies();
-  const lang = cookieStore.get("i18next")?.value === "es" ? "es" : "en";
+  const saved = cookieStore.get("i18next")?.value;
+  // First visit (no saved choice): follow the browser's language, as the client detector used to.
+  const preferred = (await headers())
+    .get("accept-language")
+    ?.toLowerCase()
+    .startsWith("es")
+    ? "es"
+    : "en";
+  const lang: "en" | "es" =
+    saved === "es" || saved === "en" ? saved : preferred;
 
   return (
     <html
@@ -39,7 +48,7 @@ export default async function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <Providers lang={lang}>{children}</Providers>
       </body>
     </html>
   );

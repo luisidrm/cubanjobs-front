@@ -1,12 +1,25 @@
-import { JobBoard } from "@/components/jobs/job-board";
-import { AdminHomeRedirect } from "@/components/layout/admin-home-redirect";
+import type { Metadata } from "next";
+import { Landing } from "@/components/landing/landing";
+import { SignedInRedirect } from "@/components/layout/signed-in-redirect";
 
-/** Browse-first landing: real jobs before sign-up, sign-in prompt pinned in glass. */
+export const metadata: Metadata = {
+  title: "Brújula — Empleo y talento en Cuba",
+  description:
+    "Brújula conecta a quienes buscan trabajo con las empresas que contratan en Cuba, con salarios en CUP, MLC o USD y pago por Transfermóvil. Jobs and talent in Cuba.",
+  openGraph: {
+    title: "Brújula — Empleo y talento en Cuba",
+    description:
+      "Encuentra trabajo, publica vacantes y ofrece tus servicios como freelancer. Find work, post jobs and offer your services.",
+    type: "website",
+  },
+};
+
+/** Marketing landing page. The job board lives at /jobs. */
 export default function Home() {
   return (
     <>
-      <AdminHomeRedirect />
-      <JobBoard hero />
+      <SignedInRedirect />
+      <Landing />
     </>
   );
 }

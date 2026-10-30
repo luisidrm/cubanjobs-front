@@ -72,7 +72,7 @@ export default function CompaniesPage() {
         {data?.map((c) => (
           <article
             key={c.id}
-            className="relative flex items-center gap-3 rounded-xl bg-card p-4 shadow-sm ring-1 ring-separator transition-[transform,box-shadow] duration-200 ease-spring hover:shadow-md active:scale-[0.99]"
+            className="relative flex min-w-0 items-center gap-3 rounded-xl bg-card p-4 shadow-sm ring-1 ring-separator transition-[transform,box-shadow] duration-200 ease-spring hover:shadow-md active:scale-[0.99]"
           >
             <CompanyLogo
               name={c.name}
