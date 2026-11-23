@@ -1,5 +1,6 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/lib/baseQuery";
+import { pagedList } from "./paging";
 import type {
   PublicUserProfile,
   SkillCatalogItem,
@@ -150,6 +151,7 @@ export const usersApi = createApi({
     searchWorkers: builder.query<WorkerSummary[], WorkerSearchFilters>({
       query: (filters) => ({ url: "/api/v1/users/workers", params: filters }),
       transformResponse: (r: ApiResponse<WorkerSummary[]>) => r.data,
+      ...pagedList<WorkerSummary, WorkerSearchFilters>(),
     }),
 
     getWorkerSkills: builder.query<string[], void>({

@@ -12,6 +12,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSession } from "@/lib/session";
+import { usePagedOffset } from "@/lib/use-paged-offset";
 import { useGetTagsQuery, useSearchJobsQuery } from "@/store/api/jobsApi";
 import {
   useGetMySavedJobsQuery,
@@ -22,6 +23,7 @@ import type { Currency, JobSearchFilters } from "@/types/job";
 
 type ChipKey = "remote" | "CUP" | "MLC" | "USD" | "fullTime";
 const CURRENCIES: ChipKey[] = ["CUP", "MLC", "USD"];
+const PAGE_SIZE = 20;
 
 /**
  * Job list with search + filter chips. Public: works signed out (save prompts
@@ -39,8 +41,8 @@ export function JobBoard({ hero = false }: { hero?: boolean }) {
 
   const { data: tags } = useGetTagsQuery();
 
-  const filters = useMemo<JobSearchFilters>(() => {
-    const f: JobSearchFilters = { limit: 20, offset: 0 };
+  const baseFilters = useMemo<JobSearchFilters>(() => {
+    const f: JobSearchFilters = { limit: PAGE_SIZE };
     if (query.trim()) f.q = query.trim();
     if (active.has("remote")) f.isRemote = true;
     if (active.has("fullTime")) f.jobType = "full_time";
@@ -49,8 +51,13 @@ export function JobBoard({ hero = false }: { hero?: boolean }) {
     if (tagIds.size > 0) f.tagIds = Array.from(tagIds).join(",");
     return f;
   }, [query, active, tagIds]);
+  const paging = usePagedOffset(JSON.stringify(baseFilters));
+  const filters = useMemo<JobSearchFilters>(
+    () => ({ ...baseFilters, offset: paging.offset }),
+    [baseFilters, paging.offset],
+  );
 
-  const { data: jobs, isLoading, isError, refetch } = useSearchJobsQuery(filters);
+  const { data: jobs, isLoading, isFetching, isError, refetch } = useSearchJobsQuery(filters);
   const { data: saved } = useGetMySavedJobsQuery(undefined, { skip: guest });
   const savedIds = useMemo(() => new Set(saved?.map((s) => s.jobId)), [saved]);
   const [saveJob] = useSaveJobMutation();
@@ -180,6 +187,17 @@ export function JobBoard({ hero = false }: { hero?: boolean }) {
               />
             </li>
           ))}
+          {jobs.length >= paging.offset + PAGE_SIZE ? (
+            <li className="flex justify-center pt-1">
+              <Button
+                variant="secondary"
+                disabled={isFetching}
+                onClick={() => paging.loadMore(jobs.length)}
+              >
+                {t("explore.loadMore")}
+              </Button>
+            </li>
+          ) : null}
         </ul>
       ) : (
         <EmptyState

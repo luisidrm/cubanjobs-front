@@ -26,6 +26,7 @@ import {
   useSearchWorkersQuery,
 } from "@/store/api/usersApi";
 import type { WorkerSearchFilters, WorkerSummary } from "@/types/user";
+import { usePagedOffset } from "@/lib/use-paged-offset";
 
 const PAGE_SIZE = 24;
 
@@ -95,7 +96,6 @@ export default function TalentPage() {
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
   const [activeSkills, setActiveSkills] = useState<Set<string>>(new Set());
-  const [limit, setLimit] = useState(PAGE_SIZE);
 
   // Debounce typing so we don't hit the API on every keystroke.
   useEffect(() => {
@@ -108,12 +108,17 @@ export default function TalentPage() {
   });
   const skillLabel = useSkillLabel();
 
-  const filters = useMemo<WorkerSearchFilters>(() => {
-    const f: WorkerSearchFilters = { limit, offset: 0 };
+  const baseFilters = useMemo<WorkerSearchFilters>(() => {
+    const f: WorkerSearchFilters = { limit: PAGE_SIZE };
     if (query) f.q = query;
     if (activeSkills.size > 0) f.skills = Array.from(activeSkills).join(",");
     return f;
-  }, [query, activeSkills, limit]);
+  }, [query, activeSkills]);
+  const paging = usePagedOffset(JSON.stringify(baseFilters));
+  const filters = useMemo<WorkerSearchFilters>(
+    () => ({ ...baseFilters, offset: paging.offset }),
+    [baseFilters, paging.offset],
+  );
 
   const {
     data: workers,
@@ -124,7 +129,6 @@ export default function TalentPage() {
   } = useSearchWorkersQuery(filters, { skip: !hasAccess });
 
   function toggleSkill(skill: string) {
-    setLimit(PAGE_SIZE);
     setActiveSkills((prev) => {
       const next = new Set(prev);
       if (next.has(skill)) next.delete(skill);
@@ -137,11 +141,10 @@ export default function TalentPage() {
     setInput("");
     setQuery("");
     setActiveSkills(new Set());
-    setLimit(PAGE_SIZE);
   }
 
   const loading = meLoading || (employer && companiesLoading);
-  const canLoadMore = !!workers && workers.length >= limit;
+  const canLoadMore = !!workers && workers.length >= paging.offset + PAGE_SIZE;
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pt-8 pb-16 sm:px-6">
@@ -174,10 +177,7 @@ export default function TalentPage() {
             <Search className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-text-3" />
             <Input
               value={input}
-              onChange={(e) => {
-                setInput(e.target.value);
-                setLimit(PAGE_SIZE);
-              }}
+              onChange={(e) => setInput(e.target.value)}
               placeholder={t("exploreWorkers.searchPlaceholder")}
               className="pl-10"
               type="search"
@@ -243,7 +243,7 @@ export default function TalentPage() {
                   <Button
                     variant="secondary"
                     disabled={isFetching}
-                    onClick={() => setLimit((l) => l + PAGE_SIZE)}
+                    onClick={() => paging.loadMore(workers.length)}
                   >
                     {t("exploreWorkers.loadMore")}
                   </Button>

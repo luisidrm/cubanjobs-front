@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { authorName, useFreelancerAccess } from "@/lib/freelancer";
 import { useListFreelancerPostsQuery } from "@/store/api/freelancerApi";
 import type { FreelancerPostSummary } from "@/types/freelancer";
+import { usePagedOffset } from "@/lib/use-paged-offset";
 
 const PAGE_SIZE = 20;
 
@@ -73,13 +74,13 @@ export default function FreelancersPage() {
 
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
-  const [limit, setLimit] = useState(PAGE_SIZE);
 
   useEffect(() => {
     const id = setTimeout(() => setQuery(input.trim()), 350);
     return () => clearTimeout(id);
   }, [input]);
 
+  const paging = usePagedOffset(query);
   const {
     data: posts,
     isLoading,
@@ -87,7 +88,7 @@ export default function FreelancersPage() {
     isError,
     refetch,
   } = useListFreelancerPostsQuery(
-    { q: query || undefined, limit, offset: 0 },
+    { q: query || undefined, limit: PAGE_SIZE, offset: paging.offset },
     { skip: !canBrowse },
   );
 
@@ -137,7 +138,6 @@ export default function FreelancersPage() {
               value={input}
               onChange={(e) => {
                 setInput(e.target.value);
-                setLimit(PAGE_SIZE);
               }}
               placeholder={t("freelancers.searchPlaceholder")}
               className="pl-10"
@@ -182,12 +182,12 @@ export default function FreelancersPage() {
                   <PostCard key={p.id} post={p} />
                 ))}
               </div>
-              {posts.length >= limit ? (
+              {posts.length >= paging.offset + PAGE_SIZE ? (
                 <div className="flex justify-center">
                   <Button
                     variant="secondary"
                     disabled={isFetching}
-                    onClick={() => setLimit((l) => l + PAGE_SIZE)}
+                    onClick={() => paging.loadMore(posts.length)}
                   >
                     {t("freelancers.loadMore")}
                   </Button>
