@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  // Lets relative URLs (share images, canonicals) resolve to the public address.
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  ),
   title: "Brújula — Empleos en Cuba",
   description: "Tu norte profesional. Find and post jobs across Cuba.",
 };
