@@ -31,7 +31,12 @@ export default function ErrorPage({
       <Button size="lg" onClick={reset}>
         {t("errors.tryAgain")}
       </Button>
-      <Button size="lg" variant="secondary" nativeButton={false} render={<Link href="/" />}>
+      <Button
+        size="lg"
+        variant="secondary"
+        nativeButton={false}
+        render={<Link href="/" />}
+      >
         {t("errors.goHome")}
       </Button>
     </StatusScreen>

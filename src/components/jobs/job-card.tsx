@@ -40,7 +40,12 @@ export function JobCard({
           className="h-36 w-full bg-fill-2 object-cover"
         />
       ) : null}
-      <div className={cn("flex items-center gap-3 px-4", !job.coverImageUrl && "pt-4")}>
+      <div
+        className={cn(
+          "flex items-center gap-3 px-4",
+          !job.coverImageUrl && "pt-4",
+        )}
+      >
         <CompanyLogo name={job.company?.name} logoUrl={job.company?.logoUrl} />
         <div className="min-w-0 flex-1">
           <h3 className="truncate text-base leading-tight font-semibold tracking-normal">

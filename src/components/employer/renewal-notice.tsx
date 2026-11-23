@@ -8,7 +8,10 @@ import type { Company } from "@/types/company";
 
 /** Stripe renewal date, or the Transfermóvil/manual expiry. null on the free tier. */
 export function companyNextPaymentDate(
-  c: Pick<Company, "planTier" | "planSource" | "planExpiresAt" | "currentPeriodEnd">,
+  c: Pick<
+    Company,
+    "planTier" | "planSource" | "planExpiresAt" | "currentPeriodEnd"
+  >,
 ): string | null {
   if (c.planTier === "free") return null;
   return c.planSource === "stripe" ? c.currentPeriodEnd : c.planExpiresAt;
@@ -23,12 +26,20 @@ export function RenewalNotice({ company }: { company: Company }) {
   if (company.planTier === "free") return null;
 
   if (company.memberRole !== "owner") {
-    return <p className="text-[15px] text-muted-foreground">{t("billing.ownerOnly")}</p>;
+    return (
+      <p className="text-[15px] text-muted-foreground">
+        {t("billing.ownerOnly")}
+      </p>
+    );
   }
 
   const date = companyNextPaymentDate(company);
   if (!date) {
-    return <p className="text-[15px] text-muted-foreground">{t("billing.noExpiry")}</p>;
+    return (
+      <p className="text-[15px] text-muted-foreground">
+        {t("billing.noExpiry")}
+      </p>
+    );
   }
 
   const days = daysUntil(date) ?? 0;
@@ -38,7 +49,8 @@ export function RenewalNotice({ company }: { company: Company }) {
     month: "long",
     year: "numeric",
   });
-  const rel = days <= 0 ? t("billing.today") : t("billing.inDays", { count: days });
+  const rel =
+    days <= 0 ? t("billing.today") : t("billing.inDays", { count: days });
   const stripe = company.planSource === "stripe";
 
   return (
@@ -50,7 +62,10 @@ export function RenewalNotice({ company }: { company: Company }) {
     >
       <CalendarClock className="size-4 shrink-0" />
       <span>
-        {stripe ? t("billing.nextPaymentOn", { date: when }) : t("billing.expiresOn", { date: when })} · {rel}
+        {stripe
+          ? t("billing.nextPaymentOn", { date: when })
+          : t("billing.expiresOn", { date: when })}{" "}
+        · {rel}
       </span>
     </p>
   );

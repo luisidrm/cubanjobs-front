@@ -9,9 +9,9 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { authorName, useFreelancerAccess } from "@/lib/freelancer";
+import { usePagedOffset } from "@/lib/use-paged-offset";
 import { useListFreelancerPostsQuery } from "@/store/api/freelancerApi";
 import type { FreelancerPostSummary } from "@/types/freelancer";
-import { usePagedOffset } from "@/lib/use-paged-offset";
 
 const PAGE_SIZE = 20;
 

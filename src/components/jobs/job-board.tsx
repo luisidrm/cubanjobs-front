@@ -57,7 +57,13 @@ export function JobBoard({ hero = false }: { hero?: boolean }) {
     [baseFilters, paging.offset],
   );
 
-  const { data: jobs, isLoading, isFetching, isError, refetch } = useSearchJobsQuery(filters);
+  const {
+    data: jobs,
+    isLoading,
+    isFetching,
+    isError,
+    refetch,
+  } = useSearchJobsQuery(filters);
   const { data: saved } = useGetMySavedJobsQuery(undefined, { skip: guest });
   const savedIds = useMemo(() => new Set(saved?.map((s) => s.jobId)), [saved]);
   const [saveJob] = useSaveJobMutation();
@@ -68,7 +74,8 @@ export function JobBoard({ hero = false }: { hero?: boolean }) {
       const next = new Set(prev);
       if (next.has(key)) next.delete(key);
       else {
-        if (CURRENCIES.includes(key)) for (const c of CURRENCIES) next.delete(c);
+        if (CURRENCIES.includes(key))
+          for (const c of CURRENCIES) next.delete(c);
         next.add(key);
       }
       return next;
@@ -110,7 +117,9 @@ export function JobBoard({ hero = false }: { hero?: boolean }) {
         {hero ? (
           <h1 className="text-balance text-4xl leading-[1.1] sm:text-5xl">
             {t("explore.headline")}{" "}
-            <span className="text-accent-text">{t("explore.headlineAccent")}</span>
+            <span className="text-accent-text">
+              {t("explore.headlineAccent")}
+            </span>
           </h1>
         ) : (
           <h1 className="text-3xl sm:text-4xl">{t("tabs.explore")}</h1>
@@ -227,7 +236,11 @@ function GuestBar() {
           {t("welcome.barText")}
         </p>
         <div className="grid grid-cols-2 gap-2">
-          <Button variant="outline" nativeButton={false} render={<Link href="/sign-in" />}>
+          <Button
+            variant="outline"
+            nativeButton={false}
+            render={<Link href="/sign-in" />}
+          >
             {t("login.signIn")}
           </Button>
           <Button nativeButton={false} render={<Link href="/sign-up" />}>

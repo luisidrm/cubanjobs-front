@@ -1,14 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link2Off, LockKeyhole, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Link2Off, LockKeyhole, ShieldCheck } from "lucide-react";
 import { AuthCard } from "@/components/auth/auth-card";
-import { StatusScreen } from "@/components/ui/status-screen";
 import { Button } from "@/components/ui/button";
 import { DangerBanner } from "@/components/ui/danger-banner";
 import {
@@ -20,6 +19,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { StatusScreen } from "@/components/ui/status-screen";
 import { getErrorMessage } from "@/lib/errors";
 import {
   type ResetPasswordInput,
@@ -76,10 +76,18 @@ export default function ResetPasswordPage() {
         title={t("resetPassword.invalidToken")}
         message={t("resetPassword.subtitle")}
       >
-        <Button size="lg" nativeButton={false} render={<Link href="/forgot-password" />}>
+        <Button
+          size="lg"
+          nativeButton={false}
+          render={<Link href="/forgot-password" />}
+        >
           {t("resetPassword.requestNewLink")}
         </Button>
-        <Button variant="ghost" nativeButton={false} render={<Link href="/sign-in" />}>
+        <Button
+          variant="ghost"
+          nativeButton={false}
+          render={<Link href="/sign-in" />}
+        >
           {t("forgotPassword.backToSignIn")}
         </Button>
       </StatusScreen>
@@ -94,7 +102,11 @@ export default function ResetPasswordPage() {
         title={t("resetPassword.successTitle")}
         message={t("resetPassword.successMessage")}
       >
-        <Button size="lg" nativeButton={false} render={<Link href="/sign-in" />}>
+        <Button
+          size="lg"
+          nativeButton={false}
+          render={<Link href="/sign-in" />}
+        >
           {t("resetPassword.continueToSignIn")}
         </Button>
       </StatusScreen>

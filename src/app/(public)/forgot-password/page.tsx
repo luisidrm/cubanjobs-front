@@ -1,13 +1,12 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { KeyRound, MailCheck } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { KeyRound, MailCheck } from "lucide-react";
 import { AuthCard } from "@/components/auth/auth-card";
-import { StatusScreen } from "@/components/ui/status-screen";
 import { Button } from "@/components/ui/button";
 import { DangerBanner } from "@/components/ui/danger-banner";
 import {
@@ -19,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { StatusScreen } from "@/components/ui/status-screen";
 import { applyFieldErrors } from "@/lib/authFormErrors";
 import { getErrorMessage } from "@/lib/errors";
 import {
@@ -63,7 +63,11 @@ export default function ForgotPasswordPage() {
         title={t("forgotPassword.successTitle")}
         message={t("forgotPassword.successMessage")}
       >
-        <Button size="lg" nativeButton={false} render={<Link href="/sign-in" />}>
+        <Button
+          size="lg"
+          nativeButton={false}
+          render={<Link href="/sign-in" />}
+        >
           {t("forgotPassword.backToSignIn")}
         </Button>
       </StatusScreen>

@@ -1,6 +1,12 @@
 "use client";
 
-import { CalendarClock, CreditCard, LayoutDashboard, Tags, Wrench } from "lucide-react";
+import {
+  CalendarClock,
+  CreditCard,
+  LayoutDashboard,
+  Tags,
+  Wrench,
+} from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -23,7 +29,11 @@ const NAV = [
  * on small screens. Route access is also enforced by the API (admin role);
  * this only keeps non-admins from seeing an empty console.
  */
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const { t } = useTranslation();
   const pathname = usePathname();
   const router = useRouter();
@@ -58,7 +68,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {t("adminPay.menu")}
         </p>
         {NAV.map((item) => {
-          const on = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
+          const on =
+            item.href === "/admin"
+              ? pathname === "/admin"
+              : pathname.startsWith(item.href);
           return (
             <Link
               key={item.href}

@@ -1,6 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/lib/baseQuery";
-import { pagedList } from "./paging";
 import type {
   Currency,
   EmployerJob,
@@ -10,6 +9,7 @@ import type {
   JobType,
   Tag,
 } from "@/types/job";
+import { pagedList } from "./paging";
 
 interface ApiResponse<T> {
   success: boolean;

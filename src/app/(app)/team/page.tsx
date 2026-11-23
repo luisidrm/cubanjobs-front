@@ -1,6 +1,13 @@
 "use client";
 
-import { Copy, RefreshCw, Share2, UserMinus, Users, WifiOff } from "lucide-react";
+import {
+  Copy,
+  RefreshCw,
+  Share2,
+  UserMinus,
+  Users,
+  WifiOff,
+} from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -37,14 +44,17 @@ export default function TeamPage() {
   const { t, i18n } = useTranslation();
   const { data: me, isLoading: meLoading } = useGetMeQuery();
   const employer = me?.role === "employer";
-  const { data: companies, isLoading: companiesLoading } = useGetMyCompaniesQuery(
-    undefined,
-    { skip: !employer },
-  );
+  const { data: companies, isLoading: companiesLoading } =
+    useGetMyCompaniesQuery(undefined, { skip: !employer });
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const company = companies?.find((c) => c.id === selectedId) ?? companies?.[0];
 
-  const { data: team, isLoading, isError, refetch } = useGetTeamQuery(company?.id ?? "", {
+  const {
+    data: team,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetTeamQuery(company?.id ?? "", {
     skip: !company,
   });
   const [createInvite, { isLoading: creating }] = useCreateInviteMutation();
@@ -52,7 +62,9 @@ export default function TeamPage() {
   const [removeMember] = useRemoveTeamMemberMutation();
   const [target, setTarget] = useState<TeamMember | null>(null);
 
-  const full = team ? team.seatLimit !== null && team.seatsUsed >= team.seatLimit : false;
+  const full = team
+    ? team.seatLimit !== null && team.seatsUsed >= team.seatLimit
+    : false;
   const leaving = target?.userId === me?.id;
 
   async function handleGenerate() {
@@ -102,7 +114,10 @@ export default function TeamPage() {
     const member = target;
     setTarget(null);
     try {
-      await removeMember({ companyId: company.id, userId: member.userId }).unwrap();
+      await removeMember({
+        companyId: company.id,
+        userId: member.userId,
+      }).unwrap();
     } catch (err) {
       toast.error(getErrorMessage(err, t("team.removeError")));
     }
@@ -166,14 +181,21 @@ export default function TeamPage() {
                   <Badge variant={full ? "warning" : "default"}>
                     {team.seatLimit === null
                       ? t("team.seatsUnlimited", { used: team.seatsUsed })
-                      : t("team.seatsOf", { used: team.seatsUsed, limit: team.seatLimit })}
+                      : t("team.seatsOf", {
+                          used: team.seatsUsed,
+                          limit: team.seatLimit,
+                        })}
                   </Badge>
                 </div>
                 {team.seatLimit !== null ? (
                   <div className="h-2 overflow-hidden rounded-full bg-fill-2">
                     <div
-                      className={full ? "h-full bg-warning" : "h-full bg-primary"}
-                      style={{ width: `${Math.min(100, (team.seatsUsed / team.seatLimit) * 100)}%` }}
+                      className={
+                        full ? "h-full bg-warning" : "h-full bg-primary"
+                      }
+                      style={{
+                        width: `${Math.min(100, (team.seatsUsed / team.seatLimit) * 100)}%`,
+                      }}
                     />
                   </div>
                 ) : null}
@@ -181,7 +203,9 @@ export default function TeamPage() {
 
               {team.canManage ? (
                 <section className="flex flex-col gap-3 rounded-xl bg-card p-5 ring-1 ring-separator">
-                  <h2 className="text-lg font-semibold">{t("team.inviteTitle")}</h2>
+                  <h2 className="text-lg font-semibold">
+                    {t("team.inviteTitle")}
+                  </h2>
                   {full ? (
                     <>
                       <p className="text-[15px] text-muted-foreground">
@@ -190,20 +214,27 @@ export default function TeamPage() {
                           limit: team.seatLimit,
                         })}
                       </p>
-                      <Button nativeButton={false} render={<Link href="/plans" />}>
+                      <Button
+                        nativeButton={false}
+                        render={<Link href="/plans" />}
+                      >
                         {t("team.seatLimitUpgrade")}
                       </Button>
                     </>
                   ) : team.invite ? (
                     <>
-                      <p className="text-[15px] text-muted-foreground">{t("team.inviteHelp")}</p>
+                      <p className="text-[15px] text-muted-foreground">
+                        {t("team.inviteHelp")}
+                      </p>
                       <div className="flex flex-col items-center gap-1 rounded-xl bg-accent-soft py-4">
                         <span className="font-mono text-3xl font-bold tracking-[0.25em] text-accent-text select-all">
                           {team.invite.code}
                         </span>
                         <span className="text-[13px] text-text-3">
                           {t("team.inviteExpires", {
-                            date: new Date(team.invite.expiresAt).toLocaleDateString(i18n.language, {
+                            date: new Date(
+                              team.invite.expiresAt,
+                            ).toLocaleDateString(i18n.language, {
                               day: "numeric",
                               month: "short",
                             }),
@@ -211,7 +242,10 @@ export default function TeamPage() {
                         </span>
                       </div>
                       <div className="grid grid-cols-2 gap-2">
-                        <Button variant="secondary" onClick={() => handleCopy(team.invite!.code)}>
+                        <Button
+                          variant="secondary"
+                          onClick={() => handleCopy(team.invite!.code)}
+                        >
                           <Copy />
                           {t("team.copy")}
                         </Button>
@@ -219,18 +253,28 @@ export default function TeamPage() {
                           <Share2 />
                           {t("team.share")}
                         </Button>
-                        <Button variant="ghost" disabled={creating} onClick={handleGenerate}>
+                        <Button
+                          variant="ghost"
+                          disabled={creating}
+                          onClick={handleGenerate}
+                        >
                           <RefreshCw />
                           {t("team.regenerate")}
                         </Button>
-                        <Button variant="ghost" disabled={revoking} onClick={handleRevoke}>
+                        <Button
+                          variant="ghost"
+                          disabled={revoking}
+                          onClick={handleRevoke}
+                        >
                           {t("team.revoke")}
                         </Button>
                       </div>
                     </>
                   ) : (
                     <>
-                      <p className="text-[15px] text-muted-foreground">{t("team.inviteHelp")}</p>
+                      <p className="text-[15px] text-muted-foreground">
+                        {t("team.inviteHelp")}
+                      </p>
                       <Button disabled={creating} onClick={handleGenerate}>
                         {t("team.generate")}
                       </Button>
@@ -238,7 +282,9 @@ export default function TeamPage() {
                   )}
                 </section>
               ) : (
-                <p className="px-1 text-[13px] text-text-3">{t("team.ownerOnly")}</p>
+                <p className="px-1 text-[13px] text-text-3">
+                  {t("team.ownerOnly")}
+                </p>
               )}
 
               <section className="flex flex-col gap-2">
@@ -248,7 +294,8 @@ export default function TeamPage() {
                 <ul className="overflow-hidden rounded-xl bg-card ring-1 ring-separator">
                   {team.members.map((m) => {
                     const isYou = m.userId === me?.id;
-                    const actionable = m.role !== "owner" && (team.canManage || isYou);
+                    const actionable =
+                      m.role !== "owner" && (team.canManage || isYou);
                     return (
                       <li
                         key={m.userId}
@@ -257,7 +304,11 @@ export default function TeamPage() {
                         <div className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-full bg-accent-soft text-sm font-bold text-accent-text">
                           {m.profilePictureUrl ? (
                             // eslint-disable-next-line @next/next/no-img-element
-                            <img src={m.profilePictureUrl} alt="" className="size-full object-cover" />
+                            <img
+                              src={m.profilePictureUrl}
+                              alt=""
+                              className="size-full object-cover"
+                            />
                           ) : (
                             memberName(m).charAt(0).toUpperCase()
                           )}
@@ -267,7 +318,9 @@ export default function TeamPage() {
                             {memberName(m)}
                             {isYou ? ` · ${t("team.you")}` : ""}
                           </p>
-                          <p className="truncate text-[13px] text-text-3">{m.email}</p>
+                          <p className="truncate text-[13px] text-text-3">
+                            {m.email}
+                          </p>
                         </div>
                         {m.role === "owner" ? (
                           <Badge>{t("team.owner")}</Badge>
@@ -275,7 +328,9 @@ export default function TeamPage() {
                           <Button
                             variant="ghost"
                             size="icon"
-                            aria-label={isYou ? t("team.leave") : t("team.remove")}
+                            aria-label={
+                              isYou ? t("team.leave") : t("team.remove")
+                            }
                             onClick={() => setTarget(m)}
                           >
                             <UserMinus className="text-destructive" />
@@ -293,13 +348,18 @@ export default function TeamPage() {
         </>
       ) : null}
 
-      <Dialog open={target !== null} onOpenChange={(o) => !o && setTarget(null)}>
+      <Dialog
+        open={target !== null}
+        onOpenChange={(o) => !o && setTarget(null)}
+      >
         <DialogContent showCloseButton={false} className="text-center">
           <DialogHeader className="items-center">
             <DialogTitle>
               {leaving
                 ? t("team.leaveTitle")
-                : t("team.removeTitle", { name: target ? memberName(target) : "" })}
+                : t("team.removeTitle", {
+                    name: target ? memberName(target) : "",
+                  })}
             </DialogTitle>
             <DialogDescription>
               {leaving ? t("team.leaveMessage") : t("team.removeMessage")}

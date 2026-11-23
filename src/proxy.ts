@@ -8,7 +8,21 @@ import "@/lib/supertokensServer";
 // authorization still happens at the API layer (requireAuth) — this just
 // keeps obviously-unauthenticated requests from ever reaching a protected
 // page, and bounces already-signed-in users off the auth screens.
-const PROTECTED_ROUTES = ["/onboarding", "/plans", "/admin", "/team", "/talent", "/my-jobs", "/company", "/billing", "/profile", "/activity", "/notifications", "/applicants", "/freelancers"];
+const PROTECTED_ROUTES = [
+  "/onboarding",
+  "/plans",
+  "/admin",
+  "/team",
+  "/talent",
+  "/my-jobs",
+  "/company",
+  "/billing",
+  "/profile",
+  "/activity",
+  "/notifications",
+  "/applicants",
+  "/freelancers",
+];
 const AUTH_ROUTES = ["/sign-in", "/sign-up"];
 
 export default async function proxy(req: NextRequest) {

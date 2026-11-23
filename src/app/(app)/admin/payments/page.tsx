@@ -5,7 +5,12 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PaymentDetail } from "@/components/admin/payment-detail";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Segmented } from "@/components/ui/segmented";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,9 +27,12 @@ export default function AdminPaymentsPage() {
   const [status, setStatus] = useState<PaymentStatus>("pending");
   const [selected, setSelected] = useState<string | null>(null);
 
-  const { data, isLoading, isError, refetch } = useGetAdminPaymentsQuery(status, {
-    pollingInterval: 60_000,
-  });
+  const { data, isLoading, isError, refetch } = useGetAdminPaymentsQuery(
+    status,
+    {
+      pollingInterval: 60_000,
+    },
+  );
 
   return (
     <div className="flex flex-col gap-5">
@@ -72,7 +80,11 @@ export default function AdminPaymentsPage() {
           {data && data.items.length === 0 && !isError ? (
             <EmptyState
               icon={CheckCheck}
-              message={status === "pending" ? t("adminPay.emptyPending") : t("adminPay.emptyList")}
+              message={
+                status === "pending"
+                  ? t("adminPay.emptyPending")
+                  : t("adminPay.emptyList")
+              }
             />
           ) : null}
 
@@ -86,7 +98,9 @@ export default function AdminPaymentsPage() {
                 aria-pressed={on}
                 className={cn(
                   "flex w-full min-w-0 flex-col gap-2.5 rounded-xl bg-card p-4 text-left shadow-sm transition-[transform,box-shadow] duration-200 ease-spring outline-none focus-visible:ring-4 focus-visible:ring-ring/45 active:scale-[0.99]",
-                  on ? "ring-2 ring-primary" : "ring-1 ring-separator hover:shadow-md",
+                  on
+                    ? "ring-2 ring-primary"
+                    : "ring-1 ring-separator hover:shadow-md",
                 )}
               >
                 <span className="flex min-w-0 items-center gap-3">
@@ -109,7 +123,9 @@ export default function AdminPaymentsPage() {
                     <span className="text-lg font-bold tabular-nums">
                       {p.amountCup.toLocaleString()}
                     </span>
-                    <span className="font-mono text-xs text-muted-foreground">CUP</span>
+                    <span className="font-mono text-xs text-muted-foreground">
+                      CUP
+                    </span>
                   </span>
                 </span>
                 <span className="flex min-w-0 items-center justify-between gap-2 text-[13px]">
@@ -132,9 +148,16 @@ export default function AdminPaymentsPage() {
         {/* Desktop: sticky glass detail panel. */}
         <aside className="hidden xl:sticky xl:top-24 xl:block">
           {selected ? (
-            <PaymentDetail key={selected} id={selected} onDone={() => setSelected(null)} />
+            <PaymentDetail
+              key={selected}
+              id={selected}
+              onDone={() => setSelected(null)}
+            />
           ) : (
-            <EmptyState icon={CheckCheck} message={t("adminPay.detail.title")} />
+            <EmptyState
+              icon={CheckCheck}
+              message={t("adminPay.detail.title")}
+            />
           )}
         </aside>
       </div>
@@ -147,7 +170,11 @@ export default function AdminPaymentsPage() {
               <DialogTitle>{t("adminPay.detail.title")}</DialogTitle>
             </DialogHeader>
             {selected ? (
-              <PaymentDetail key={selected} id={selected} onDone={() => setSelected(null)} />
+              <PaymentDetail
+                key={selected}
+                id={selected}
+                onDone={() => setSelected(null)}
+              />
             ) : null}
           </DialogContent>
         </Dialog>

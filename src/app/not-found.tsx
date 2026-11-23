@@ -22,7 +22,12 @@ export default function NotFound() {
           <Button size="lg" nativeButton={false} render={<Link href="/" />}>
             {t("errors.goHome")}
           </Button>
-          <Button size="lg" variant="secondary" nativeButton={false} render={<Link href="/jobs" />}>
+          <Button
+            size="lg"
+            variant="secondary"
+            nativeButton={false}
+            render={<Link href="/jobs" />}
+          >
             {t("tabs.explore")}
           </Button>
         </StatusScreen>

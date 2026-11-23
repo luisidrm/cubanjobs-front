@@ -1,6 +1,13 @@
 "use client";
 
-import { ArrowLeft, FileText, MessageCircle, User, Users, WifiOff } from "lucide-react";
+import {
+  ArrowLeft,
+  FileText,
+  MessageCircle,
+  User,
+  Users,
+  WifiOff,
+} from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useState } from "react";
@@ -25,9 +32,17 @@ import type {
   EmployerSettableStatus,
 } from "@/types/application";
 
-const SETTABLE: EmployerSettableStatus[] = ["pending", "reviewed", "accepted", "rejected"];
+const SETTABLE: EmployerSettableStatus[] = [
+  "pending",
+  "reviewed",
+  "accepted",
+  "rejected",
+];
 
-const STATUS_VARIANT: Record<ApplicationStatus, "ghost" | "info" | "success" | "destructive"> = {
+const STATUS_VARIANT: Record<
+  ApplicationStatus,
+  "ghost" | "info" | "success" | "destructive"
+> = {
   pending: "ghost",
   reviewed: "info",
   accepted: "success",
@@ -35,16 +50,25 @@ const STATUS_VARIANT: Record<ApplicationStatus, "ghost" | "info" | "success" | "
   withdrawn: "ghost",
 };
 
-function ApplicantCard({ application }: { application: ApplicationWithApplicant }) {
+function ApplicantCard({
+  application,
+}: {
+  application: ApplicationWithApplicant;
+}) {
   const { t, i18n } = useTranslation();
-  const [updateStatus, { isLoading: updating }] = useUpdateApplicationStatusMutation();
-  const [updateNotes, { isLoading: savingNotes }] = useUpdateApplicationNotesMutation();
+  const [updateStatus, { isLoading: updating }] =
+    useUpdateApplicationStatusMutation();
+  const [updateNotes, { isLoading: savingNotes }] =
+    useUpdateApplicationNotesMutation();
   const [notes, setNotes] = useState(application.employerNotes ?? "");
   const dirty = notes !== (application.employerNotes ?? "");
 
   const { applicant } = application;
-  const fullName = [applicant.firstName, applicant.lastName].filter(Boolean).join(" ") || applicant.email;
-  const initials = `${applicant.firstName?.[0] ?? applicant.email[0]}${applicant.lastName?.[0] ?? ""}`.toUpperCase();
+  const fullName =
+    [applicant.firstName, applicant.lastName].filter(Boolean).join(" ") ||
+    applicant.email;
+  const initials =
+    `${applicant.firstName?.[0] ?? applicant.email[0]}${applicant.lastName?.[0] ?? ""}`.toUpperCase();
   const whatsapp = applicant.phone?.replace(/\D/g, "") ?? "";
 
   async function setStatus(status: EmployerSettableStatus) {
@@ -70,7 +94,11 @@ function ApplicantCard({ application }: { application: ApplicationWithApplicant 
         <div className="grid size-11 shrink-0 place-items-center overflow-hidden rounded-full bg-accent-soft font-semibold text-accent-text">
           {applicant.profilePictureUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={applicant.profilePictureUrl} alt="" className="size-full object-cover" />
+            <img
+              src={applicant.profilePictureUrl}
+              alt=""
+              className="size-full object-cover"
+            />
           ) : (
             initials
           )}
@@ -80,10 +108,13 @@ function ApplicantCard({ application }: { application: ApplicationWithApplicant 
           <p className="truncate text-[13px] text-text-3">
             {applicant.email} ·{" "}
             {t("employer.appliedOn", {
-              date: new Date(application.createdAt).toLocaleDateString(i18n.language, {
-                month: "short",
-                day: "numeric",
-              }),
+              date: new Date(application.createdAt).toLocaleDateString(
+                i18n.language,
+                {
+                  month: "short",
+                  day: "numeric",
+                },
+              ),
             })}
           </p>
         </div>
@@ -103,7 +134,9 @@ function ApplicantCard({ application }: { application: ApplicationWithApplicant 
           variant="secondary"
           size="sm"
           nativeButton={false}
-          render={<a href={application.resumeUrl} target="_blank" rel="noreferrer" />}
+          render={
+            <a href={application.resumeUrl} target="_blank" rel="noreferrer" />
+          }
         >
           <FileText />
           {t("jobApplicants.viewResume")}
@@ -122,7 +155,13 @@ function ApplicantCard({ application }: { application: ApplicationWithApplicant 
             variant="secondary"
             size="sm"
             nativeButton={false}
-            render={<a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noreferrer" />}
+            render={
+              <a
+                href={`https://wa.me/${whatsapp}`}
+                target="_blank"
+                rel="noreferrer"
+              />
+            }
           >
             <MessageCircle />
             {t("jobApplicants.contactWhatsapp")}
@@ -147,7 +186,9 @@ function ApplicantCard({ application }: { application: ApplicationWithApplicant 
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor={`notes-${application.id}`}>{t("jobApplicants.notes")}</Label>
+        <Label htmlFor={`notes-${application.id}`}>
+          {t("jobApplicants.notes")}
+        </Label>
         <Textarea
           id={`notes-${application.id}`}
           value={notes}
@@ -168,7 +209,12 @@ function ApplicantCard({ application }: { application: ApplicationWithApplicant 
 export default function JobApplicantsPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const { data: applications, isLoading, isError, refetch } = useGetApplicationsForJobQuery(id);
+  const {
+    data: applications,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetApplicationsForJobQuery(id);
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 pt-6 pb-16 sm:px-6">

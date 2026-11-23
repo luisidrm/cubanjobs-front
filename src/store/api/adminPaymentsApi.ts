@@ -1,11 +1,11 @@
-import { baseQuery } from "@/lib/baseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "@/lib/baseQuery";
 import type {
   AccountPlanState,
+  AdminMetrics,
   AdminPaymentDetail,
   AdminPaymentList,
   AdminPaymentRow,
-  AdminMetrics,
   AdminPlan,
   AdminSettings,
   PlanEvent,
@@ -33,8 +33,14 @@ export const adminPaymentsApi = createApi({
     }),
 
     getAdminPayments: builder.query<AdminPaymentList, PaymentStatus>({
-      query: (status) => ({ url: "/api/v1/admin/payments", params: { status, limit: 50 } }),
-      transformResponse: (r: ApiResponse<AdminPaymentRow[]>) => ({ items: r.data, pending: r.meta?.pending ?? 0 }),
+      query: (status) => ({
+        url: "/api/v1/admin/payments",
+        params: { status, limit: 50 },
+      }),
+      transformResponse: (r: ApiResponse<AdminPaymentRow[]>) => ({
+        items: r.data,
+        pending: r.meta?.pending ?? 0,
+      }),
       providesTags: ["AdminPayment"],
     }),
 
@@ -44,15 +50,35 @@ export const adminPaymentsApi = createApi({
       providesTags: (_r, _e, id) => [{ type: "AdminPayment", id }],
     }),
 
-    approvePayment: builder.mutation<{ id: string; status: string; expiresAt: string | null }, string>({
-      query: (id) => ({ url: `/api/v1/admin/payments/${id}/approve`, method: "POST" }),
-      transformResponse: (r: ApiResponse<{ id: string; status: string; expiresAt: string | null }>) => r.data,
+    approvePayment: builder.mutation<
+      { id: string; status: string; expiresAt: string | null },
+      string
+    >({
+      query: (id) => ({
+        url: `/api/v1/admin/payments/${id}/approve`,
+        method: "POST",
+      }),
+      transformResponse: (
+        r: ApiResponse<{
+          id: string;
+          status: string;
+          expiresAt: string | null;
+        }>,
+      ) => r.data,
       invalidatesTags: ["AdminPayment", "AdminAccount"],
     }),
 
-    rejectPayment: builder.mutation<{ id: string; status: string }, { id: string; reason: string }>({
-      query: ({ id, reason }) => ({ url: `/api/v1/admin/payments/${id}/reject`, method: "POST", body: { reason } }),
-      transformResponse: (r: ApiResponse<{ id: string; status: string }>) => r.data,
+    rejectPayment: builder.mutation<
+      { id: string; status: string },
+      { id: string; reason: string }
+    >({
+      query: ({ id, reason }) => ({
+        url: `/api/v1/admin/payments/${id}/reject`,
+        method: "POST",
+        body: { reason },
+      }),
+      transformResponse: (r: ApiResponse<{ id: string; status: string }>) =>
+        r.data,
       invalidatesTags: ["AdminPayment"],
     }),
 
@@ -63,7 +89,10 @@ export const adminPaymentsApi = createApi({
     }),
 
     getExpiringAccounts: builder.query<AccountPlanState[], number>({
-      query: (days) => ({ url: "/api/v1/admin/accounts/expiring", params: { days } }),
+      query: (days) => ({
+        url: "/api/v1/admin/accounts/expiring",
+        params: { days },
+      }),
       transformResponse: (r: ApiResponse<AccountPlanState[]>) => r.data,
       providesTags: ["AdminAccount"],
     }),
@@ -75,8 +104,15 @@ export const adminPaymentsApi = createApi({
     }),
 
     // expiresAt: ISO string, or null for no expiry
-    setAccountPlan: builder.mutation<void, PlanTarget & { plan: string; expiresAt: string | null; note?: string }>({
-      query: ({ kind, id, ...body }) => ({ url: `/api/v1/admin/accounts/${kind}/${id}/plan`, method: "PUT", body }),
+    setAccountPlan: builder.mutation<
+      void,
+      PlanTarget & { plan: string; expiresAt: string | null; note?: string }
+    >({
+      query: ({ kind, id, ...body }) => ({
+        url: `/api/v1/admin/accounts/${kind}/${id}/plan`,
+        method: "PUT",
+        body,
+      }),
       invalidatesTags: ["AdminAccount", "AdminPayment"],
     }),
 
@@ -86,13 +122,32 @@ export const adminPaymentsApi = createApi({
       providesTags: ["AdminPlans"],
     }),
 
-    updatePlan: builder.mutation<void, { id: string; patch: Partial<Pick<AdminPlan, "name" | "jobLimit" | "candidateSearch" | "isActive">> }>({
-      query: ({ id, patch }) => ({ url: `/api/v1/admin/plans/${id}`, method: "PATCH", body: patch }),
+    updatePlan: builder.mutation<
+      void,
+      {
+        id: string;
+        patch: Partial<
+          Pick<AdminPlan, "name" | "jobLimit" | "candidateSearch" | "isActive">
+        >;
+      }
+    >({
+      query: ({ id, patch }) => ({
+        url: `/api/v1/admin/plans/${id}`,
+        method: "PATCH",
+        body: patch,
+      }),
       invalidatesTags: ["AdminPlans"],
     }),
 
-    setPlanPrice: builder.mutation<void, { id: string; months: number; priceCup: number; isActive: boolean }>({
-      query: ({ id, months, ...body }) => ({ url: `/api/v1/admin/plans/${id}/prices/${months}`, method: "PUT", body }),
+    setPlanPrice: builder.mutation<
+      void,
+      { id: string; months: number; priceCup: number; isActive: boolean }
+    >({
+      query: ({ id, months, ...body }) => ({
+        url: `/api/v1/admin/plans/${id}/prices/${months}`,
+        method: "PUT",
+        body,
+      }),
       invalidatesTags: ["AdminPlans"],
     }),
 
@@ -103,7 +158,11 @@ export const adminPaymentsApi = createApi({
     }),
 
     updatePaymentSettings: builder.mutation<AdminSettings, AdminSettings>({
-      query: (body) => ({ url: "/api/v1/admin/payment-settings", method: "PUT", body }),
+      query: (body) => ({
+        url: "/api/v1/admin/payment-settings",
+        method: "PUT",
+        body,
+      }),
       transformResponse: (r: ApiResponse<AdminSettings>) => r.data,
       invalidatesTags: ["AdminSettings"],
     }),

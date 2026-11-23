@@ -1,6 +1,5 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { baseQuery } from "@/lib/baseQuery";
-import { pagedList } from "./paging";
 import type {
   FreelancerListFilters,
   FreelancerPostDetail,
@@ -8,6 +7,7 @@ import type {
   FreelancerPostSummary,
   MyFreelancerPost,
 } from "@/types/freelancer";
+import { pagedList } from "./paging";
 
 interface ApiResponse<T> {
   success: boolean;

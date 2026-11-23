@@ -21,7 +21,12 @@ import { useSearchJobsQuery } from "@/store/api/jobsApi";
 export default function CompanyPage() {
   const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
-  const { data: company, isLoading, isError, refetch } = useGetCompanyByIdQuery(id);
+  const {
+    data: company,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetCompanyByIdQuery(id);
   const { data: openJobs, isLoading: jobsLoading } = useSearchJobsQuery({
     companyId: id,
     limit: 50,
@@ -122,7 +127,9 @@ export default function CompanyPage() {
             {company.industry ? (
               <li className="flex min-h-13 items-center justify-between gap-3 border-b border-separator px-4 py-2 last:border-b-0">
                 <span className="font-medium">{t("companyView.industry")}</span>
-                <span className="text-muted-foreground">{company.industry}</span>
+                <span className="text-muted-foreground">
+                  {company.industry}
+                </span>
               </li>
             ) : null}
             {company.employeeCount ? (

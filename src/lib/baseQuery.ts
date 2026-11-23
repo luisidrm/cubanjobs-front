@@ -53,7 +53,10 @@ export const baseQuery: BaseQueryFn<
       // user out here would turn a transient API hiccup into a forced logout,
       // so surface the failure and let them retry instead.
       return {
-        error: { status: "FETCH_ERROR", error: "Could not refresh the session" },
+        error: {
+          status: "FETCH_ERROR",
+          error: "Could not refresh the session",
+        },
       };
     }
   }

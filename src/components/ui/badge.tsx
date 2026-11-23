@@ -1,7 +1,7 @@
-import { mergeProps } from "@base-ui/react/merge-props"
-import { useRender } from "@base-ui/react/use-render"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cn } from "cn"
+import { mergeProps } from "@base-ui/react/merge-props";
+import { useRender } from "@base-ui/react/use-render";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "cn";
 
 // Pill status labels. Application / order status mapping from the design system:
 // pending = warning, reviewed = info, accepted = success, rejected = destructive, withdrawn = neutral.
@@ -10,8 +10,10 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground [a]:hover:bg-(--accent-hover)",
-        secondary: "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
+        default:
+          "bg-primary text-primary-foreground [a]:hover:bg-(--accent-hover)",
+        secondary:
+          "bg-secondary text-secondary-foreground [a]:hover:bg-secondary/80",
         success: "bg-success-soft text-success-text",
         warning: "bg-warning-soft text-warning-text",
         info: "bg-info-soft text-info-text",
@@ -24,8 +26,8 @@ const badgeVariants = cva(
     defaultVariants: {
       variant: "default",
     },
-  }
-)
+  },
+);
 
 function Badge({
   className,
@@ -39,14 +41,14 @@ function Badge({
       {
         className: cn(badgeVariants({ variant }), className),
       },
-      props
+      props,
     ),
     render,
     state: {
       slot: "badge",
       variant,
     },
-  })
+  });
 }
 
-export { Badge, badgeVariants }
+export { Badge, badgeVariants };

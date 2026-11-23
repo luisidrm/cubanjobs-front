@@ -93,7 +93,13 @@ export interface AdminMetrics {
     pendingCount: number;
     pendingCup: number;
     rejectedCount: number;
-    byPlan: { code: string; name: string; audience: string; count: number; amountCup: number }[];
+    byPlan: {
+      code: string;
+      name: string;
+      audience: string;
+      count: number;
+      amountCup: number;
+    }[];
     byMonth: { month: string; amountCup: number; count: number }[];
   };
 }

@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { hasCandidateSearchAccess } from "@/lib/plans";
 import { useSkillLabel } from "@/lib/skills";
+import { usePagedOffset } from "@/lib/use-paged-offset";
 import { useGetMyCompaniesQuery } from "@/store/api/companiesApi";
 import {
   useGetMeQuery,
@@ -26,7 +27,6 @@ import {
   useSearchWorkersQuery,
 } from "@/store/api/usersApi";
 import type { WorkerSearchFilters, WorkerSummary } from "@/types/user";
-import { usePagedOffset } from "@/lib/use-paged-offset";
 
 const PAGE_SIZE = 24;
 

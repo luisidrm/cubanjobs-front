@@ -63,16 +63,20 @@ export const companiesApi = createApi({
       providesTags: (_r, _e, companyId) => [{ type: "Team", id: companyId }],
     }),
 
-    createInvite: builder.mutation<{ code: string; expiresAt: string }, string>({
-      query: (companyId) => ({
-        url: `/api/v1/companies/${companyId}/invite`,
-        method: "POST",
-      }),
-      transformResponse: (
-        r: ApiResponse<{ code: string; expiresAt: string }>,
-      ) => r.data,
-      invalidatesTags: (_r, _e, companyId) => [{ type: "Team", id: companyId }],
-    }),
+    createInvite: builder.mutation<{ code: string; expiresAt: string }, string>(
+      {
+        query: (companyId) => ({
+          url: `/api/v1/companies/${companyId}/invite`,
+          method: "POST",
+        }),
+        transformResponse: (
+          r: ApiResponse<{ code: string; expiresAt: string }>,
+        ) => r.data,
+        invalidatesTags: (_r, _e, companyId) => [
+          { type: "Team", id: companyId },
+        ],
+      },
+    ),
 
     revokeInvite: builder.mutation<void, string>({
       query: (companyId) => ({

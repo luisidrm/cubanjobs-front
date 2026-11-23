@@ -19,8 +19,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { getErrorMessage } from "@/lib/errors";
-import { useRedirectIfAuthenticated } from "@/lib/session";
 import { homeFor } from "@/lib/home";
+import { useRedirectIfAuthenticated } from "@/lib/session";
 import { type SignInInput, signInSchema } from "@/lib/validation/auth";
 import { useSignInMutation } from "@/store/api/authApi";
 import { useLazyGetMeQuery } from "@/store/api/usersApi";

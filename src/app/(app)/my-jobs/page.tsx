@@ -22,7 +22,10 @@ import { useGetMyCompaniesQuery } from "@/store/api/companiesApi";
 import { useGetJobsByCompanyQuery } from "@/store/api/jobsApi";
 import type { JobStatus } from "@/types/job";
 
-const STATUS_VARIANT: Record<JobStatus, "ghost" | "success" | "destructive" | "warning"> = {
+const STATUS_VARIANT: Record<
+  JobStatus,
+  "ghost" | "success" | "destructive" | "warning"
+> = {
   draft: "ghost",
   active: "success",
   closed: "destructive",
@@ -33,7 +36,8 @@ export default function MyJobsPage() {
   const { t, i18n } = useTranslation();
   const [limitOpen, setLimitOpen] = useState(false);
 
-  const { data: companies, isLoading: companiesLoading } = useGetMyCompaniesQuery();
+  const { data: companies, isLoading: companiesLoading } =
+    useGetMyCompaniesQuery();
   const company = companies?.[0];
   const {
     data: jobs,
@@ -87,7 +91,9 @@ export default function MyJobsPage() {
               </Button>
             }
           />
-          <p className="text-center text-[13px] text-text-3">{t("employer.noCompanyJoin")}</p>
+          <p className="text-center text-[13px] text-text-3">
+            {t("employer.noCompanyJoin")}
+          </p>
           <JoinCompanyForm />
         </div>
       ) : null}
@@ -140,7 +146,9 @@ export default function MyJobsPage() {
                 />
               ) : null}
               <div className="min-w-0 flex-1">
-                <h2 className="truncate text-base font-semibold">{job.title}</h2>
+                <h2 className="truncate text-base font-semibold">
+                  {job.title}
+                </h2>
                 <p className="flex items-center gap-3 text-[13px] text-text-3">
                   <span className="flex items-center gap-1">
                     <Eye className="size-3.5" />
@@ -148,15 +156,20 @@ export default function MyJobsPage() {
                   </span>
                   <span>
                     {t("employer.posted", {
-                      date: new Date(job.createdAt).toLocaleDateString(i18n.language, {
-                        month: "short",
-                        day: "numeric",
-                      }),
+                      date: new Date(job.createdAt).toLocaleDateString(
+                        i18n.language,
+                        {
+                          month: "short",
+                          day: "numeric",
+                        },
+                      ),
                     })}
                   </span>
                 </p>
               </div>
-              <Badge variant={STATUS_VARIANT[job.status]}>{t(`jobStatus.${job.status}`)}</Badge>
+              <Badge variant={STATUS_VARIANT[job.status]}>
+                {t(`jobStatus.${job.status}`)}
+              </Badge>
             </div>
             <div className="flex gap-2 border-t border-separator pt-3">
               <Button
@@ -186,7 +199,9 @@ export default function MyJobsPage() {
         <DialogContent showCloseButton={false} className="text-center">
           <DialogHeader className="items-center">
             <DialogTitle>{t("myJobs.limitReachedTitle")}</DialogTitle>
-            <DialogDescription>{t("myJobs.limitReachedMessage")}</DialogDescription>
+            <DialogDescription>
+              {t("myJobs.limitReachedMessage")}
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
             <Button variant="outline" onClick={() => setLimitOpen(false)}>

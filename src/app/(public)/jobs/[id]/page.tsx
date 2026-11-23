@@ -39,12 +39,12 @@ import {
   useGetMyApplicationsQuery,
 } from "@/store/api/applicationsApi";
 import { useGetJobByIdQuery } from "@/store/api/jobsApi";
-import { useGetMeQuery } from "@/store/api/usersApi";
 import {
   useGetMySavedJobsQuery,
   useSaveJobMutation,
   useUnsaveJobMutation,
 } from "@/store/api/savedJobsApi";
+import { useGetMeQuery } from "@/store/api/usersApi";
 
 function salaryRange(min: number | null, max: number | null) {
   if (min == null && max == null) return null;
@@ -86,7 +86,8 @@ export default function JobDetailPage() {
     if (guest) return setGuestOpen(true);
     // Employees apply only with an active plan. Checked first so the pay page
     // opens before they confirm anything; the API enforces it too (402).
-    if (me?.role === "employee" && !isEmployeePlanActive(me)) return setPaywallOpen(true);
+    if (me?.role === "employee" && !isEmployeePlanActive(me))
+      return setPaywallOpen(true);
     setConfirmOpen(true);
   }
 
@@ -234,7 +235,9 @@ export default function JobDetailPage() {
                   ) : (
                     <MapPin className="size-3.5 text-primary" />
                   )}
-                  {job.isRemote ? t("jobDetails.remote") : (job.location ?? "—")}
+                  {job.isRemote
+                    ? t("jobDetails.remote")
+                    : (job.location ?? "—")}
                 </p>
               </div>
             </div>
@@ -281,7 +284,9 @@ export default function JobDetailPage() {
             <DialogContent showCloseButton={false} className="text-center">
               <DialogHeader className="items-center">
                 <DialogTitle>{t("plans.paywallTitle")}</DialogTitle>
-                <DialogDescription>{t("plans.paywallMessage")}</DialogDescription>
+                <DialogDescription>
+                  {t("plans.paywallMessage")}
+                </DialogDescription>
               </DialogHeader>
               <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
                 <Button variant="outline" onClick={() => setPaywallOpen(false)}>

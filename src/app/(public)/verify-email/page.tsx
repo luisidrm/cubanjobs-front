@@ -1,14 +1,14 @@
 "use client";
 
+import { MailCheck, MailX } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { MailCheck, MailX } from "lucide-react";
-import { StatusScreen } from "@/components/ui/status-screen";
 import { Button } from "@/components/ui/button";
-import { useVerifyEmailMutation } from "@/store/api/authApi";
+import { StatusScreen } from "@/components/ui/status-screen";
 import { homeFor } from "@/lib/home";
+import { useVerifyEmailMutation } from "@/store/api/authApi";
 import { useGetMeQuery } from "@/store/api/usersApi";
 
 type VerifyState = "verifying" | "success" | "invalid";
@@ -49,7 +49,11 @@ export default function VerifyEmailPage() {
         title={t("verifyEmail.successTitle")}
         message={t("verifyEmail.successMessage")}
       >
-        <Button size="lg" render={<Link href={homeRoute} />} nativeButton={false}>
+        <Button
+          size="lg"
+          render={<Link href={homeRoute} />}
+          nativeButton={false}
+        >
           {t("verifyEmail.continue")}
         </Button>
       </StatusScreen>
@@ -66,7 +70,11 @@ export default function VerifyEmailPage() {
       <Button size="lg" render={<Link href={homeRoute} />} nativeButton={false}>
         {t("verifyEmail.continue")}
       </Button>
-      <Button variant="ghost" nativeButton={false} render={<Link href="/sign-in" />}>
+      <Button
+        variant="ghost"
+        nativeButton={false}
+        render={<Link href="/sign-in" />}
+      >
         {t("forgotPassword.backToSignIn")}
       </Button>
     </StatusScreen>

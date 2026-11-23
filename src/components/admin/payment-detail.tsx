@@ -26,13 +26,22 @@ import {
 } from "@/store/api/adminPaymentsApi";
 import type { PaymentStatus } from "@/types/plan";
 
-const STATUS_VARIANT: Record<PaymentStatus, "warning" | "success" | "destructive"> = {
+const STATUS_VARIANT: Record<
+  PaymentStatus,
+  "warning" | "success" | "destructive"
+> = {
   pending: "warning",
   approved: "success",
   rejected: "destructive",
 };
 
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
+function Row({
+  label,
+  children,
+}: {
+  label: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex items-start justify-between gap-3 text-sm">
       <span className="text-text-3">{label}</span>
@@ -42,9 +51,20 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 }
 
 /** One payment to check: amount, payer, transfer number, screenshot, the account's plan now, approve / reject. */
-export function PaymentDetail({ id, onDone }: { id: string; onDone: () => void }) {
+export function PaymentDetail({
+  id,
+  onDone,
+}: {
+  id: string;
+  onDone: () => void;
+}) {
   const { t, i18n } = useTranslation();
-  const { data: payment, isLoading, isError, refetch } = useGetAdminPaymentQuery(id);
+  const {
+    data: payment,
+    isLoading,
+    isError,
+    refetch,
+  } = useGetAdminPaymentQuery(id);
   const [approve, { isLoading: approving }] = useApprovePaymentMutation();
   const [reject, { isLoading: rejecting }] = useRejectPaymentMutation();
 
@@ -130,7 +150,9 @@ export function PaymentDetail({ id, onDone }: { id: string; onDone: () => void }
             <span className="text-3xl font-bold tabular-nums">
               {payment.amountCup.toLocaleString()}
             </span>
-            <span className="font-mono text-sm font-medium text-muted-foreground">CUP</span>
+            <span className="font-mono text-sm font-medium text-muted-foreground">
+              CUP
+            </span>
           </span>
           <Badge variant={STATUS_VARIANT[payment.status]}>
             <span className="size-1.5 rounded-full bg-current" />
@@ -138,7 +160,9 @@ export function PaymentDetail({ id, onDone }: { id: string; onDone: () => void }
           </Badge>
         </div>
         <Row label={t("adminPay.detail.payer")}>
-          <span className="font-mono text-[13px] break-all">{payment.payerEmail}</span>
+          <span className="font-mono text-[13px] break-all">
+            {payment.payerEmail}
+          </span>
         </Row>
         {payment.companyName ? (
           <Row label={t("adminPay.detail.company")}>
@@ -150,9 +174,13 @@ export function PaymentDetail({ id, onDone }: { id: string; onDone: () => void }
             {payment.planName} · {t("plans.month", { count: payment.months })}
           </span>
         </Row>
-        <Row label={t("adminPay.detail.sent")}>{fmtDate(payment.createdAt)}</Row>
+        <Row label={t("adminPay.detail.sent")}>
+          {fmtDate(payment.createdAt)}
+        </Row>
         {payment.reviewedAt ? (
-          <Row label={t("adminPay.detail.reviewed")}>{fmtDate(payment.reviewedAt)}</Row>
+          <Row label={t("adminPay.detail.reviewed")}>
+            {fmtDate(payment.reviewedAt)}
+          </Row>
         ) : null}
         {payment.rejectReason ? (
           <p className="text-[13px] text-danger-text">
@@ -185,7 +213,12 @@ export function PaymentDetail({ id, onDone }: { id: string; onDone: () => void }
           {t("adminPay.detail.screenshot")}
         </p>
         {payment.screenshotUrl ? (
-          <a href={payment.screenshotUrl} target="_blank" rel="noreferrer" className="block">
+          <a
+            href={payment.screenshotUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="block"
+          >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={payment.screenshotUrl}
@@ -196,7 +229,9 @@ export function PaymentDetail({ id, onDone }: { id: string; onDone: () => void }
         ) : (
           <Card variant="grouped" className="flex-row items-center gap-2.5 p-4">
             <ImageOff className="size-[18px] text-text-3" />
-            <p className="text-sm text-muted-foreground">{t("adminPay.detail.noScreenshot")}</p>
+            <p className="text-sm text-muted-foreground">
+              {t("adminPay.detail.noScreenshot")}
+            </p>
           </Card>
         )}
       </section>
@@ -235,7 +270,11 @@ export function PaymentDetail({ id, onDone }: { id: string; onDone: () => void }
             <X />
             {t("adminPay.reject")}
           </Button>
-          <Button size="lg" disabled={approving} onClick={() => setConfirmOpen(true)}>
+          <Button
+            size="lg"
+            disabled={approving}
+            onClick={() => setConfirmOpen(true)}
+          >
             <Check />
             {t("adminPay.approve")}
           </Button>
@@ -280,14 +319,20 @@ export function PaymentDetail({ id, onDone }: { id: string; onDone: () => void }
               autoFocus
             />
             {reasonError ? (
-              <p className="pl-1 text-xs text-danger-text">{t("adminPay.reasonRequired")}</p>
+              <p className="pl-1 text-xs text-danger-text">
+                {t("adminPay.reasonRequired")}
+              </p>
             ) : null}
           </div>
           <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
             <Button variant="outline" onClick={() => setRejectOpen(false)}>
               {t("jobDetails.cancel")}
             </Button>
-            <Button variant="destructive" disabled={rejecting} onClick={doReject}>
+            <Button
+              variant="destructive"
+              disabled={rejecting}
+              onClick={doReject}
+            >
               {t("adminPay.reject")}
             </Button>
           </DialogFooter>

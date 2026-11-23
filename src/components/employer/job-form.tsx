@@ -34,7 +34,13 @@ import {
 } from "@/store/api/jobsApi";
 import type { Currency, JobStatus, JobType } from "@/types/job";
 
-const JOB_TYPES: JobType[] = ["full_time", "part_time", "contract", "freelance", "internship"];
+const JOB_TYPES: JobType[] = [
+  "full_time",
+  "part_time",
+  "contract",
+  "freelance",
+  "internship",
+];
 const CURRENCIES: Currency[] = ["CUP", "MLC", "USD"];
 const STATUSES: JobStatus[] = ["draft", "active", "closed", "expired"];
 const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
@@ -45,11 +51,15 @@ export function JobForm({ jobId }: { jobId?: string }) {
   const router = useRouter();
   const isEdit = Boolean(jobId);
 
-  const { data: companies, isLoading: companiesLoading } = useGetMyCompaniesQuery();
+  const { data: companies, isLoading: companiesLoading } =
+    useGetMyCompaniesQuery();
   const company = companies?.[0];
-  const { data: myJobs, isLoading: jobsLoading } = useGetJobsByCompanyQuery(company?.id ?? "", {
-    skip: !company,
-  });
+  const { data: myJobs, isLoading: jobsLoading } = useGetJobsByCompanyQuery(
+    company?.id ?? "",
+    {
+      skip: !company,
+    },
+  );
   const existing = isEdit ? myJobs?.find((j) => j.id === jobId) : undefined;
 
   const [createJob, { isLoading: creating }] = useCreateJobMutation();
@@ -72,9 +82,16 @@ export function JobForm({ jobId }: { jobId?: string }) {
   // A newly picked file uploads after the job saves; "removed" deletes the stored one.
   const [pickedCover, setPickedCover] = useState<File | null>(null);
   const [coverRemoved, setCoverRemoved] = useState(false);
-  const pickedUrl = useMemo(() => (pickedCover ? URL.createObjectURL(pickedCover) : null), [pickedCover]);
-  useEffect(() => () => (pickedUrl ? URL.revokeObjectURL(pickedUrl) : undefined), [pickedUrl]);
-  const coverPreview = pickedUrl ?? (coverRemoved ? null : (existing?.coverImageUrl ?? null));
+  const pickedUrl = useMemo(
+    () => (pickedCover ? URL.createObjectURL(pickedCover) : null),
+    [pickedCover],
+  );
+  useEffect(
+    () => () => (pickedUrl ? URL.revokeObjectURL(pickedUrl) : undefined),
+    [pickedUrl],
+  );
+  const coverPreview =
+    pickedUrl ?? (coverRemoved ? null : (existing?.coverImageUrl ?? null));
 
   // Fill the form once the job being edited has loaded.
   useEffect(() => {
@@ -96,7 +113,10 @@ export function JobForm({ jobId }: { jobId?: string }) {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file) return;
-    if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > MAX_IMAGE_BYTES) {
+    if (
+      !/^image\/(jpeg|png|webp)$/.test(file.type) ||
+      file.size > MAX_IMAGE_BYTES
+    ) {
       toast.error(t("jobForm.coverError"));
       return;
     }
@@ -131,7 +151,10 @@ export function JobForm({ jobId }: { jobId?: string }) {
     }
     const min = salaryMin.trim() ? Number(salaryMin) : undefined;
     const max = salaryMax.trim() ? Number(salaryMax) : undefined;
-    if ((min !== undefined && !Number.isFinite(min)) || (max !== undefined && !Number.isFinite(max))) {
+    if (
+      (min !== undefined && !Number.isFinite(min)) ||
+      (max !== undefined && !Number.isFinite(max))
+    ) {
       toast.error(t("jobForm.invalidSalary"));
       return;
     }
@@ -153,7 +176,10 @@ export function JobForm({ jobId }: { jobId?: string }) {
         await updateJob({ id: jobId, ...payload }).unwrap();
         await syncCover(jobId);
       } else {
-        const created = await createJob({ companyId: company.id, ...payload }).unwrap();
+        const created = await createJob({
+          companyId: company.id,
+          ...payload,
+        }).unwrap();
         await syncCover(created.id);
       }
       toast.success(t("employer.jobSaved"));
@@ -175,7 +201,9 @@ export function JobForm({ jobId }: { jobId?: string }) {
     }
   }
 
-  const loading = companiesLoading || (isEdit && (jobsLoading || (!existing && Boolean(myJobs))));
+  const loading =
+    companiesLoading ||
+    (isEdit && (jobsLoading || (!existing && Boolean(myJobs))));
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 pt-6 pb-16 sm:px-6">
@@ -202,7 +230,9 @@ export function JobForm({ jobId }: { jobId?: string }) {
         ) : null}
       </div>
 
-      <h1 className="text-3xl">{isEdit ? t("jobForm.editTitle") : t("jobForm.createTitle")}</h1>
+      <h1 className="text-3xl">
+        {isEdit ? t("jobForm.editTitle") : t("jobForm.createTitle")}
+      </h1>
 
       {loading ? (
         <div className="flex flex-col gap-4">
@@ -253,7 +283,9 @@ export function JobForm({ jobId }: { jobId?: string }) {
                 render={
                   <label>
                     <ImagePlus />
-                    {coverPreview ? t("jobForm.changeCover") : t("jobForm.addCover")}
+                    {coverPreview
+                      ? t("jobForm.changeCover")
+                      : t("jobForm.addCover")}
                     <input
                       type="file"
                       accept="image/jpeg,image/png,image/webp"
@@ -277,7 +309,9 @@ export function JobForm({ jobId }: { jobId?: string }) {
                 </Button>
               ) : null}
             </div>
-            <p className="pl-1 text-[13px] text-text-3">{t("jobForm.coverHelp")}</p>
+            <p className="pl-1 text-[13px] text-text-3">
+              {t("jobForm.coverHelp")}
+            </p>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -353,7 +387,10 @@ export function JobForm({ jobId }: { jobId?: string }) {
             <Label>{t("jobForm.status")}</Label>
             <Segmented
               aria-label={t("jobForm.status")}
-              options={STATUSES.map((s) => ({ value: s, label: t(`jobStatus.${s}`) }))}
+              options={STATUSES.map((s) => ({
+                value: s,
+                label: t(`jobStatus.${s}`),
+              }))}
               value={status}
               onChange={setStatus}
             />
@@ -369,7 +406,9 @@ export function JobForm({ jobId }: { jobId?: string }) {
         <DialogContent showCloseButton={false} className="text-center">
           <DialogHeader className="items-center">
             <DialogTitle>{t("jobForm.confirmDeleteTitle")}</DialogTitle>
-            <DialogDescription>{t("jobForm.confirmDeleteMessage")}</DialogDescription>
+            <DialogDescription>
+              {t("jobForm.confirmDeleteMessage")}
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
             <Button variant="outline" onClick={() => setConfirmDelete(false)}>

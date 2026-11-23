@@ -1,6 +1,12 @@
 "use client";
 
-import { CalendarClock, ChevronRight, CreditCard, Tags, Wrench } from "lucide-react";
+import {
+  CalendarClock,
+  ChevronRight,
+  CreditCard,
+  Tags,
+  Wrench,
+} from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { AdminMetricsPanel } from "@/components/admin/metrics";
@@ -14,7 +20,11 @@ const EXPIRING_DAYS = 7;
 const PREVIEW = 5;
 
 function formatDate(iso: string, locale: string) {
-  return new Date(iso).toLocaleDateString(locale, { day: "numeric", month: "short", year: "numeric" });
+  return new Date(iso).toLocaleDateString(locale, {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function Stat({
@@ -63,7 +73,10 @@ function Section({
     <section className="flex flex-col gap-3 rounded-xl bg-card p-5 ring-1 ring-separator">
       <div className="flex items-center justify-between gap-3">
         <h2 className="text-lg font-semibold">{title}</h2>
-        <Link href={href} className="text-sm font-medium text-accent-text hover:underline">
+        <Link
+          href={href}
+          className="text-sm font-medium text-accent-text hover:underline"
+        >
           {t("adminPay.overview.viewAll")}
         </Link>
       </div>
@@ -82,7 +95,8 @@ const SHORTCUTS = [
 /** Admin landing page: what needs attention now, plus a shortcut to every admin action. */
 export default function AdminOverviewPage() {
   const { t, i18n } = useTranslation();
-  const { data: pending, isLoading: pendingLoading } = useGetAdminPaymentsQuery("pending");
+  const { data: pending, isLoading: pendingLoading } =
+    useGetAdminPaymentsQuery("pending");
   const { data: expiring, isLoading: expiringLoading } =
     useGetExpiringAccountsQuery(EXPIRING_DAYS);
 
@@ -108,10 +122,15 @@ export default function AdminOverviewPage() {
         />
       </div>
 
-      <Section title={t("adminPay.overview.needsReview")} href="/admin/payments">
+      <Section
+        title={t("adminPay.overview.needsReview")}
+        href="/admin/payments"
+      >
         {pendingLoading ? <Skeleton className="h-24 rounded-lg" /> : null}
         {!pendingLoading && (pending?.items.length ?? 0) === 0 ? (
-          <p className="text-[15px] text-muted-foreground">{t("adminPay.emptyPending")}</p>
+          <p className="text-[15px] text-muted-foreground">
+            {t("adminPay.emptyPending")}
+          </p>
         ) : null}
         <ul className="flex flex-col divide-y divide-separator">
           {pending?.items.slice(0, PREVIEW).map((p) => (
@@ -142,7 +161,9 @@ export default function AdminOverviewPage() {
       >
         {expiringLoading ? <Skeleton className="h-24 rounded-lg" /> : null}
         {!expiringLoading && (expiring?.length ?? 0) === 0 ? (
-          <p className="text-[15px] text-muted-foreground">{t("adminPay.overview.noneExpiring")}</p>
+          <p className="text-[15px] text-muted-foreground">
+            {t("adminPay.overview.noneExpiring")}
+          </p>
         ) : null}
         <ul className="flex flex-col divide-y divide-separator">
           {expiring?.slice(0, PREVIEW).map((a) => (
@@ -155,7 +176,9 @@ export default function AdminOverviewPage() {
                   <p className="truncate text-[15px] font-medium">{a.label}</p>
                   <p className="truncate text-sm text-muted-foreground">
                     {a.plan}
-                    {a.planExpiresAt ? ` · ${formatDate(a.planExpiresAt, i18n.language)}` : ""}
+                    {a.planExpiresAt
+                      ? ` · ${formatDate(a.planExpiresAt, i18n.language)}`
+                      : ""}
                   </p>
                 </div>
                 <ChevronRight className="size-[18px] shrink-0 text-text-3" />

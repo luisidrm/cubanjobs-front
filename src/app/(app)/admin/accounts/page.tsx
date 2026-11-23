@@ -51,7 +51,8 @@ function AccountEditor({
   const { data: history } = useGetPlanHistoryQuery(target, { skip: !account });
 
   const futureExpiry =
-    account?.planExpiresAt && new Date(account.planExpiresAt).getTime() > Date.now()
+    account?.planExpiresAt &&
+    new Date(account.planExpiresAt).getTime() > Date.now()
       ? account.planExpiresAt
       : null;
   const currentPlan = plan ?? account?.plan ?? "free";
@@ -100,9 +101,12 @@ function AccountEditor({
     let expiresAt: string | null = null;
     if (paid) {
       if (choice === "keep" && futureExpiry) expiresAt = futureExpiry;
-      else if (choice === "d30") expiresAt = new Date(Date.now() + 30 * DAY).toISOString();
-      else if (choice === "d90") expiresAt = new Date(Date.now() + 90 * DAY).toISOString();
-      else if (choice === "d180") expiresAt = new Date(Date.now() + 180 * DAY).toISOString();
+      else if (choice === "d30")
+        expiresAt = new Date(Date.now() + 30 * DAY).toISOString();
+      else if (choice === "d90")
+        expiresAt = new Date(Date.now() + 90 * DAY).toISOString();
+      else if (choice === "d180")
+        expiresAt = new Date(Date.now() + 180 * DAY).toISOString();
     }
     try {
       await setPlan({
@@ -126,7 +130,11 @@ function AccountEditor({
           <DialogTitle className="break-all">{account?.label}</DialogTitle>
         </DialogHeader>
 
-        <Segmented<string> value={currentPlan} onChange={setPlanValue} options={planOptions} />
+        <Segmented<string>
+          value={currentPlan}
+          onChange={setPlanValue}
+          options={planOptions}
+        />
 
         {paid ? (
           <div className="flex flex-col gap-2">
@@ -158,9 +166,13 @@ function AccountEditor({
               {t("adminPay.accounts.history")}
             </p>
             {history.slice(0, 6).map((e) => (
-              <div key={e.id} className="flex justify-between gap-3 text-[13px]">
+              <div
+                key={e.id}
+                className="flex justify-between gap-3 text-[13px]"
+              >
                 <span className="min-w-0 flex-1">
-                  {e.fromPlan} → {e.toPlan} · {t(`adminPay.accounts.reason.${e.reason}`)}
+                  {e.fromPlan} → {e.toPlan} ·{" "}
+                  {t(`adminPay.accounts.reason.${e.reason}`)}
                   {e.note ? ` · ${e.note}` : ""}
                 </span>
                 <span className="shrink-0 text-text-3">
@@ -175,7 +187,12 @@ function AccountEditor({
         ) : null}
 
         <DialogFooter className="border-0 bg-transparent p-0">
-          <Button size="lg" className="w-full" disabled={isLoading} onClick={save}>
+          <Button
+            size="lg"
+            className="w-full"
+            disabled={isLoading}
+            onClick={save}
+          >
             {t("adminPay.accounts.save")}
           </Button>
         </DialogFooter>
@@ -191,12 +208,16 @@ export default function AdminAccountsPage() {
   const [selected, setSelected] = useState<AccountPlanState | null>(null);
 
   const searching = submitted.length >= 2;
-  const { data: found, isFetching: searchingNow } = useSearchAccountsQuery(submitted, {
-    skip: !searching,
-  });
-  const { data: expiring, isLoading: expiringLoading } = useGetExpiringAccountsQuery(7, {
-    skip: searching,
-  });
+  const { data: found, isFetching: searchingNow } = useSearchAccountsQuery(
+    submitted,
+    {
+      skip: !searching,
+    },
+  );
+  const { data: expiring, isLoading: expiringLoading } =
+    useGetExpiringAccountsQuery(7, {
+      skip: searching,
+    });
   const list = searching ? found : expiring;
 
   return (
@@ -245,7 +266,9 @@ export default function AdminAccountsPage() {
         <EmptyState
           icon={Users}
           message={
-            searching ? t("adminPay.accounts.noResults") : t("adminPay.accounts.nobodyExpiring")
+            searching
+              ? t("adminPay.accounts.noResults")
+              : t("adminPay.accounts.nobodyExpiring")
           }
         />
       ) : null}
@@ -266,16 +289,21 @@ export default function AdminAccountsPage() {
                 </span>
                 <span className="flex items-center justify-between text-[13px] text-text-3">
                   <span>
-                    {t(`adminPay.accounts.${a.kind === "user" ? "employee" : "employer"}`)} ·{" "}
-                    {t(`adminPay.source.${a.planSource}`)}
+                    {t(
+                      `adminPay.accounts.${a.kind === "user" ? "employee" : "employer"}`,
+                    )}{" "}
+                    · {t(`adminPay.source.${a.planSource}`)}
                   </span>
                   {a.planExpiresAt ? (
                     <span className="text-muted-foreground tabular-nums">
-                      {new Date(a.planExpiresAt).toLocaleDateString(i18n.language, {
-                        day: "numeric",
-                        month: "short",
-                        year: "numeric",
-                      })}
+                      {new Date(a.planExpiresAt).toLocaleDateString(
+                        i18n.language,
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        },
+                      )}
                     </span>
                   ) : null}
                 </span>

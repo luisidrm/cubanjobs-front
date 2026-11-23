@@ -33,14 +33,17 @@ export default function CompanyPage() {
 
   const [createCompany, { isLoading: creating }] = useCreateCompanyMutation();
   const [updateCompany, { isLoading: updating }] = useUpdateCompanyMutation();
-  const [uploadLogo, { isLoading: uploadingLogo }] = useUploadCompanyLogoMutation();
+  const [uploadLogo, { isLoading: uploadingLogo }] =
+    useUploadCompanyLogoMutation();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [website, setWebsite] = useState("");
   const [industry, setIndustry] = useState("");
   const [location, setLocation] = useState("");
-  const [employeeCount, setEmployeeCount] = useState<EmployeeCount | undefined>(undefined);
+  const [employeeCount, setEmployeeCount] = useState<EmployeeCount | undefined>(
+    undefined,
+  );
   const [nameError, setNameError] = useState(false);
 
   // Fill the form once the company has loaded.
@@ -58,7 +61,10 @@ export default function CompanyPage() {
     const file = e.target.files?.[0];
     e.target.value = "";
     if (!file || !company) return;
-    if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > MAX_IMAGE_BYTES) {
+    if (
+      !/^image\/(jpeg|png|webp)$/.test(file.type) ||
+      file.size > MAX_IMAGE_BYTES
+    ) {
       toast.error(t("companyProfile.uploadError"));
       return;
     }
@@ -116,7 +122,11 @@ export default function CompanyPage() {
               <div className="grid size-[84px] place-items-center overflow-hidden rounded-3xl bg-accent-soft text-primary">
                 {company.logoUrl ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={company.logoUrl} alt="" className="size-full object-cover" />
+                  <img
+                    src={company.logoUrl}
+                    alt=""
+                    className="size-full object-cover"
+                  />
                 ) : (
                   <Building2 className="size-8" />
                 )}
@@ -141,10 +151,20 @@ export default function CompanyPage() {
               />
               <RenewalNotice company={company} />
               <div className="flex gap-2">
-                <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/team" />}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  nativeButton={false}
+                  render={<Link href="/team" />}
+                >
                   {t("tabs.team")}
                 </Button>
-                <Button variant="ghost" size="sm" nativeButton={false} render={<Link href="/billing" />}>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  nativeButton={false}
+                  render={<Link href="/billing" />}
+                >
                   {t("billing.title")}
                 </Button>
               </div>
@@ -163,11 +183,15 @@ export default function CompanyPage() {
                 maxLength={255}
               />
               {nameError ? (
-                <p className="pl-1 text-[13px] text-destructive">{t("companyProfile.nameRequired")}</p>
+                <p className="pl-1 text-[13px] text-destructive">
+                  {t("companyProfile.nameRequired")}
+                </p>
               ) : null}
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-description">{t("companyProfile.description")}</Label>
+              <Label htmlFor="company-description">
+                {t("companyProfile.description")}
+              </Label>
               <Textarea
                 id="company-description"
                 value={description}
@@ -177,7 +201,9 @@ export default function CompanyPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-website">{t("companyProfile.website")}</Label>
+              <Label htmlFor="company-website">
+                {t("companyProfile.website")}
+              </Label>
               <Input
                 id="company-website"
                 type="url"
@@ -188,7 +214,9 @@ export default function CompanyPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-industry">{t("companyProfile.industry")}</Label>
+              <Label htmlFor="company-industry">
+                {t("companyProfile.industry")}
+              </Label>
               <Input
                 id="company-industry"
                 value={industry}
@@ -198,7 +226,9 @@ export default function CompanyPage() {
               />
             </div>
             <div className="flex flex-col gap-2">
-              <Label htmlFor="company-location">{t("companyProfile.location")}</Label>
+              <Label htmlFor="company-location">
+                {t("companyProfile.location")}
+              </Label>
               <Input
                 id="company-location"
                 value={location}
@@ -217,13 +247,17 @@ export default function CompanyPage() {
               />
             </div>
             <Button type="submit" size="lg" disabled={creating || updating}>
-              {company ? t("companyProfile.saveChanges") : t("companyProfile.create")}
+              {company
+                ? t("companyProfile.saveChanges")
+                : t("companyProfile.create")}
             </Button>
           </form>
 
           {!company ? (
             <>
-              <p className="text-center text-[13px] text-text-3">{t("employer.noCompanyJoin")}</p>
+              <p className="text-center text-[13px] text-text-3">
+                {t("employer.noCompanyJoin")}
+              </p>
               <JoinCompanyForm />
             </>
           ) : null}

@@ -10,7 +10,11 @@ import { getErrorMessage } from "@/lib/errors";
 import { useJoinCompanyMutation } from "@/store/api/companiesApi";
 
 /** Enter a teammate's invite code to join their company (no payment: their plan covers you). */
-export function JoinCompanyForm({ onJoined }: { onJoined?: (companyId: string) => void }) {
+export function JoinCompanyForm({
+  onJoined,
+}: {
+  onJoined?: (companyId: string) => void;
+}) {
   const { t } = useTranslation();
   const [code, setCode] = useState("");
   const [join, { isLoading }] = useJoinCompanyMutation();
@@ -24,17 +28,26 @@ export function JoinCompanyForm({ onJoined }: { onJoined?: (companyId: string) =
       setCode("");
       onJoined?.(company.id);
     } catch (err) {
-      const failure = err as { status?: number; data?: { details?: { code?: string } } };
+      const failure = err as {
+        status?: number;
+        data?: { details?: { code?: string } };
+      };
       if (failure?.status === 404) toast.error(t("join.invalid"));
       else if (failure?.status === 409) toast.error(t("join.already"));
-      else if (failure?.status === 403 && failure.data?.details?.code === "SEAT_LIMIT_REACHED")
+      else if (
+        failure?.status === 403 &&
+        failure.data?.details?.code === "SEAT_LIMIT_REACHED"
+      )
         toast.error(t("join.full"));
       else toast.error(getErrorMessage(err, t("join.error")));
     }
   }
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-3 rounded-xl bg-card p-5 ring-1 ring-separator">
+    <form
+      onSubmit={submit}
+      className="flex flex-col gap-3 rounded-xl bg-card p-5 ring-1 ring-separator"
+    >
       <h2 className="flex items-center gap-2 text-lg font-semibold">
         <KeyRound className="size-5 text-primary" />
         {t("join.title")}

@@ -2,7 +2,12 @@
 
 // Last resort: only renders when the root layout itself fails, so it can't use
 // the app providers, i18n or the design-system components. Plain and bilingual.
-export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
+export default function GlobalError({
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
   return (
     <html lang="es">
       <body
@@ -19,7 +24,9 @@ export default function GlobalError({ reset }: { error: Error & { digest?: strin
         }}
       >
         <div style={{ maxWidth: 360 }}>
-          <h1 style={{ fontSize: 28, margin: "0 0 8px" }}>Algo salió mal · Something went wrong</h1>
+          <h1 style={{ fontSize: 28, margin: "0 0 8px" }}>
+            Algo salió mal · Something went wrong
+          </h1>
           <p style={{ margin: "0 0 20px", color: "#4a5a55" }}>
             Ocurrió un error inesperado. · An unexpected error happened.
           </p>

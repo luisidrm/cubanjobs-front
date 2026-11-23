@@ -108,7 +108,9 @@ function PriceRow({ plan, months }: { plan: AdminPlan; months: number }) {
           label={t("adminPay.plans.available")}
           checked={current.isActive}
           disabled={saving}
-          onChange={(v) => void save({ priceCup: current.priceCup, isActive: v })}
+          onChange={(v) =>
+            void save({ priceCup: current.priceCup, isActive: v })
+          }
         />
       ) : (
         <span className="w-[52px] shrink-0" />
@@ -123,7 +125,8 @@ function PlanCard({ plan }: { plan: AdminPlan }) {
   const initialLimit = plan.jobLimit === null ? "" : String(plan.jobLimit);
   const [limit, setLimit] = useState(initialLimit);
   const limitDirty = limit !== initialLimit;
-  const limitValid = limit === "" || (Number.isInteger(Number(limit)) && Number(limit) >= 0);
+  const limitValid =
+    limit === "" || (Number.isInteger(Number(limit)) && Number(limit) >= 0);
 
   async function patch(p: Parameters<typeof updatePlan>[0]["patch"]) {
     try {
@@ -156,7 +159,9 @@ function PlanCard({ plan }: { plan: AdminPlan }) {
           <>
             <div className="flex items-end gap-2">
               <div className="flex flex-1 flex-col gap-1.5">
-                <Label htmlFor={`limit-${plan.id}`}>{t("adminPay.plans.jobLimit")}</Label>
+                <Label htmlFor={`limit-${plan.id}`}>
+                  {t("adminPay.plans.jobLimit")}
+                </Label>
                 <Input
                   id={`limit-${plan.id}`}
                   value={limit}
@@ -167,14 +172,20 @@ function PlanCard({ plan }: { plan: AdminPlan }) {
               {limitDirty ? (
                 <Button
                   disabled={!limitValid}
-                  onClick={() => void patch({ jobLimit: limit === "" ? null : Number(limit) })}
+                  onClick={() =>
+                    void patch({
+                      jobLimit: limit === "" ? null : Number(limit),
+                    })
+                  }
                 >
                   {t("adminPay.accounts.save")}
                 </Button>
               ) : null}
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-sm font-medium">{t("adminPay.plans.candidateSearch")}</span>
+              <span className="text-sm font-medium">
+                {t("adminPay.plans.candidateSearch")}
+              </span>
               <Switch
                 label={t("adminPay.plans.candidateSearch")}
                 checked={plan.candidateSearch}
@@ -205,19 +216,26 @@ const SETTING_FIELDS = [
   { key: "destination_holder", label: "plans.holder", multiline: false },
   { key: "instructions_es", label: "adminPay.plans.instrEs", multiline: true },
   { key: "instructions_en", label: "adminPay.plans.instrEn", multiline: true },
-  { key: "reminder_days_before", label: "adminPay.plans.reminderDays", multiline: false },
+  {
+    key: "reminder_days_before",
+    label: "adminPay.plans.reminderDays",
+    multiline: false,
+  },
 ] as const;
 
 function SettingsCard({ initial }: { initial: Record<string, string> }) {
   const { t } = useTranslation();
   const [values, setValues] = useState<Record<string, string>>(initial);
   const [save, { isLoading }] = useUpdatePaymentSettingsMutation();
-  const dirty = SETTING_FIELDS.some((f) => (values[f.key] ?? "") !== (initial[f.key] ?? ""));
+  const dirty = SETTING_FIELDS.some(
+    (f) => (values[f.key] ?? "") !== (initial[f.key] ?? ""),
+  );
 
   async function submit() {
     const changed: Record<string, string> = {};
     for (const f of SETTING_FIELDS) {
-      if ((values[f.key] ?? "") !== (initial[f.key] ?? "")) changed[f.key] = values[f.key] ?? "";
+      if ((values[f.key] ?? "") !== (initial[f.key] ?? ""))
+        changed[f.key] = values[f.key] ?? "";
     }
     try {
       await save(changed).unwrap();
@@ -229,7 +247,9 @@ function SettingsCard({ initial }: { initial: Record<string, string> }) {
 
   return (
     <Card className="gap-4">
-      <h2 className="px-(--card-spacing) text-xl">{t("adminPay.plans.settings")}</h2>
+      <h2 className="px-(--card-spacing) text-xl">
+        {t("adminPay.plans.settings")}
+      </h2>
       <div className="flex flex-col gap-4 px-(--card-spacing)">
         {SETTING_FIELDS.map((f) => (
           <div key={f.key} className="flex flex-col gap-1.5">
@@ -238,15 +258,23 @@ function SettingsCard({ initial }: { initial: Record<string, string> }) {
               <Textarea
                 id={`setting-${f.key}`}
                 value={values[f.key] ?? ""}
-                onChange={(e) => setValues((p) => ({ ...p, [f.key]: e.target.value }))}
+                onChange={(e) =>
+                  setValues((p) => ({ ...p, [f.key]: e.target.value }))
+                }
               />
             ) : (
               <Input
                 id={`setting-${f.key}`}
                 value={values[f.key] ?? ""}
-                onChange={(e) => setValues((p) => ({ ...p, [f.key]: e.target.value }))}
-                inputMode={f.key === "reminder_days_before" ? "numeric" : undefined}
-                className={f.key === "destination_holder" ? undefined : "font-mono"}
+                onChange={(e) =>
+                  setValues((p) => ({ ...p, [f.key]: e.target.value }))
+                }
+                inputMode={
+                  f.key === "reminder_days_before" ? "numeric" : undefined
+                }
+                className={
+                  f.key === "destination_holder" ? undefined : "font-mono"
+                }
               />
             )}
           </div>
@@ -270,9 +298,13 @@ export default function AdminPlansPage() {
       <h1 className="px-1 text-3xl">{t("adminPay.plans.title")}</h1>
       {isLoading ? <Skeleton className="h-64 rounded-xl" /> : null}
       <div className="grid gap-5 lg:grid-cols-2">
-        {plans?.map((plan) => <PlanCard key={plan.id} plan={plan} />)}
+        {plans?.map((plan) => (
+          <PlanCard key={plan.id} plan={plan} />
+        ))}
       </div>
-      {settings ? <SettingsCard key={JSON.stringify(settings)} initial={settings} /> : null}
+      {settings ? (
+        <SettingsCard key={JSON.stringify(settings)} initial={settings} />
+      ) : null}
     </div>
   );
 }

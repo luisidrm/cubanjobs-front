@@ -37,7 +37,9 @@ function CompaniesSection() {
   const { t } = useTranslation();
   const [query, setQuery] = useState("");
   const [submitted, setSubmitted] = useState("");
-  const { data: companies, isFetching } = useSearchCompaniesQuery(submitted, { skip: !submitted });
+  const { data: companies, isFetching } = useSearchCompaniesQuery(submitted, {
+    skip: !submitted,
+  });
   const [verify, { isLoading: verifying }] = useVerifyCompanyMutation();
 
   async function toggle(id: string, next: boolean) {
@@ -64,7 +66,12 @@ function CompaniesSection() {
           placeholder={t("admin.companies.searchPlaceholder")}
           aria-label={t("admin.companies.searchPlaceholder")}
         />
-        <Button type="submit" size="icon" aria-label={t("common.search")} className="size-12">
+        <Button
+          type="submit"
+          size="icon"
+          aria-label={t("common.search")}
+          className="size-12"
+        >
           <Search />
         </Button>
       </form>
@@ -81,10 +88,14 @@ function CompaniesSection() {
               <div className="min-w-0 flex-1">
                 <p className="flex items-center gap-1.5 truncate font-medium">
                   {c.name}
-                  {c.isVerified ? <BadgeCheck className="size-4 shrink-0 text-primary" /> : null}
+                  {c.isVerified ? (
+                    <BadgeCheck className="size-4 shrink-0 text-primary" />
+                  ) : null}
                 </p>
                 <p className="text-[13px] text-text-3">
-                  {c.isVerified ? t("admin.companies.verified") : t("admin.companies.unverified")}
+                  {c.isVerified
+                    ? t("admin.companies.verified")
+                    : t("admin.companies.unverified")}
                 </p>
               </div>
               <Button
@@ -93,7 +104,9 @@ function CompaniesSection() {
                 disabled={verifying}
                 onClick={() => toggle(c.id, !c.isVerified)}
               >
-                {c.isVerified ? t("admin.companies.unverify") : t("admin.companies.verify")}
+                {c.isVerified
+                  ? t("admin.companies.unverify")
+                  : t("admin.companies.verify")}
               </Button>
             </li>
           ))}
@@ -101,7 +114,9 @@ function CompaniesSection() {
       ) : null}
 
       {submitted && !isFetching && companies?.length === 0 ? (
-        <p className="text-center text-[15px] text-text-3">{t("admin.companies.empty")}</p>
+        <p className="text-center text-[15px] text-text-3">
+          {t("admin.companies.empty")}
+        </p>
       ) : null}
     </section>
   );
@@ -112,7 +127,8 @@ function UsersSection() {
   const [email, setEmail] = useState("");
   const [lookup, { data, isFetching }] = useLazyLookupUserQuery();
   const [updateRole, { isLoading: updatingRole }] = useUpdateUserRoleMutation();
-  const [deleteOrphan, { isLoading: deleting }] = useDeleteOrphanedUserMutation();
+  const [deleteOrphan, { isLoading: deleting }] =
+    useDeleteOrphanedUserMutation();
   const [confirmOrphan, setConfirmOrphan] = useState(false);
 
   async function search(e: React.FormEvent) {
@@ -161,7 +177,12 @@ function UsersSection() {
           aria-label={t("admin.users.searchPlaceholder")}
           autoCapitalize="none"
         />
-        <Button type="submit" size="icon" aria-label={t("common.search")} className="size-12">
+        <Button
+          type="submit"
+          size="icon"
+          aria-label={t("common.search")}
+          className="size-12"
+        >
           <Search />
         </Button>
       </form>
@@ -175,7 +196,9 @@ function UsersSection() {
               <div>
                 <p className="font-semibold">{data.localUser.email}</p>
                 <p className="text-[15px] text-muted-foreground">
-                  {[data.localUser.firstName, data.localUser.lastName].filter(Boolean).join(" ") || "—"}
+                  {[data.localUser.firstName, data.localUser.lastName]
+                    .filter(Boolean)
+                    .join(" ") || "—"}
                 </p>
               </div>
               <Segmented<AdminUserRole>
@@ -191,13 +214,21 @@ function UsersSection() {
               <Badge variant="warning" className="self-start">
                 {t("admin.users.orphanedTitle")}
               </Badge>
-              <p className="text-[15px] text-muted-foreground">{t("admin.users.orphanedMessage")}</p>
-              <Button variant="destructive" disabled={deleting} onClick={() => setConfirmOrphan(true)}>
+              <p className="text-[15px] text-muted-foreground">
+                {t("admin.users.orphanedMessage")}
+              </p>
+              <Button
+                variant="destructive"
+                disabled={deleting}
+                onClick={() => setConfirmOrphan(true)}
+              >
                 {t("admin.users.cleanup")}
               </Button>
             </>
           ) : (
-            <p className="text-center text-[15px] text-text-3">{t("admin.users.notFound")}</p>
+            <p className="text-center text-[15px] text-text-3">
+              {t("admin.users.notFound")}
+            </p>
           )}
         </div>
       ) : null}
@@ -206,7 +237,9 @@ function UsersSection() {
         <DialogContent showCloseButton={false} className="text-center">
           <DialogHeader className="items-center">
             <DialogTitle>{t("admin.users.confirmCleanupTitle")}</DialogTitle>
-            <DialogDescription>{t("admin.users.confirmCleanupMessage")}</DialogDescription>
+            <DialogDescription>
+              {t("admin.users.confirmCleanupMessage")}
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
             <Button variant="outline" onClick={() => setConfirmOrphan(false)}>

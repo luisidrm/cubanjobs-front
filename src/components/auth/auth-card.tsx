@@ -10,7 +10,12 @@ interface AuthCardProps {
 }
 
 /** Shared centered shell for the five auth screens — mirrors mobile's consistent layout. */
-export function AuthCard({ icon: Icon, title, subtitle, children }: AuthCardProps) {
+export function AuthCard({
+  icon: Icon,
+  title,
+  subtitle,
+  children,
+}: AuthCardProps) {
   return (
     <div className="mx-auto flex w-full max-w-sm flex-1 flex-col items-center justify-center gap-6 px-4 py-16">
       <Logo className="text-4xl" />

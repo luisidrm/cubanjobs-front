@@ -25,12 +25,18 @@ import {
   useGetMyApplicationsQuery,
   useWithdrawApplicationMutation,
 } from "@/store/api/applicationsApi";
-import { useGetMySavedJobsQuery, useUnsaveJobMutation } from "@/store/api/savedJobsApi";
+import {
+  useGetMySavedJobsQuery,
+  useUnsaveJobMutation,
+} from "@/store/api/savedJobsApi";
 import type { ApplicationStatus } from "@/types/application";
 
 type Tab = "applications" | "saved";
 
-const STATUS_VARIANT: Record<ApplicationStatus, "ghost" | "info" | "success" | "destructive"> = {
+const STATUS_VARIANT: Record<
+  ApplicationStatus,
+  "ghost" | "info" | "success" | "destructive"
+> = {
   pending: "ghost",
   reviewed: "info",
   accepted: "success",
@@ -43,9 +49,11 @@ export default function ActivityPage() {
   const [tab, setTab] = useState<Tab>("applications");
   const [withdrawId, setWithdrawId] = useState<string | null>(null);
 
-  const { data: applications, isLoading: appsLoading } = useGetMyApplicationsQuery();
+  const { data: applications, isLoading: appsLoading } =
+    useGetMyApplicationsQuery();
   const { data: saved, isLoading: savedLoading } = useGetMySavedJobsQuery();
-  const [withdraw, { isLoading: withdrawing }] = useWithdrawApplicationMutation();
+  const [withdraw, { isLoading: withdrawing }] =
+    useWithdrawApplicationMutation();
   const [unsave] = useUnsaveJobMutation();
 
   async function confirmWithdraw() {
@@ -95,21 +103,32 @@ export default function ActivityPage() {
                     >
                       {a.job.title}
                     </Link>
-                    <p className="truncate text-sm text-muted-foreground">{a.job.company.name}</p>
+                    <p className="truncate text-sm text-muted-foreground">
+                      {a.job.company.name}
+                    </p>
                   </div>
-                  <Badge variant={STATUS_VARIANT[a.status]}>{t(`applicationStatus.${a.status}`)}</Badge>
+                  <Badge variant={STATUS_VARIANT[a.status]}>
+                    {t(`applicationStatus.${a.status}`)}
+                  </Badge>
                 </div>
                 <div className="flex items-center justify-between gap-2 border-t border-separator pt-3">
                   <span className="text-[13px] text-text-3">
                     {t("activity.appliedOn", {
-                      date: new Date(a.createdAt).toLocaleDateString(i18n.language, {
-                        month: "short",
-                        day: "numeric",
-                      }),
+                      date: new Date(a.createdAt).toLocaleDateString(
+                        i18n.language,
+                        {
+                          month: "short",
+                          day: "numeric",
+                        },
+                      ),
                     })}
                   </span>
                   {a.status === "pending" || a.status === "reviewed" ? (
-                    <Button variant="ghost" size="sm" onClick={() => setWithdrawId(a.id)}>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setWithdrawId(a.id)}
+                    >
                       {t("activity.withdraw")}
                     </Button>
                   ) : null}
@@ -171,17 +190,26 @@ export default function ActivityPage() {
         />
       )}
 
-      <Dialog open={withdrawId !== null} onOpenChange={(o) => !o && setWithdrawId(null)}>
+      <Dialog
+        open={withdrawId !== null}
+        onOpenChange={(o) => !o && setWithdrawId(null)}
+      >
         <DialogContent showCloseButton={false} className="text-center">
           <DialogHeader className="items-center">
             <DialogTitle>{t("activity.confirmWithdrawTitle")}</DialogTitle>
-            <DialogDescription>{t("activity.confirmWithdrawMessage")}</DialogDescription>
+            <DialogDescription>
+              {t("activity.confirmWithdrawMessage")}
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter className="grid grid-cols-2 gap-2 border-0 bg-transparent p-0 sm:flex-none">
             <Button variant="outline" onClick={() => setWithdrawId(null)}>
               {t("jobDetails.cancel")}
             </Button>
-            <Button variant="destructive" disabled={withdrawing} onClick={confirmWithdraw}>
+            <Button
+              variant="destructive"
+              disabled={withdrawing}
+              onClick={confirmWithdraw}
+            >
               {t("activity.withdraw")}
             </Button>
           </DialogFooter>

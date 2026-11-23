@@ -1,5 +1,5 @@
-import { baseQuery } from "@/lib/baseQuery";
 import { createApi } from "@reduxjs/toolkit/query/react";
+import { baseQuery } from "@/lib/baseQuery";
 import type { MyPayment, PaymentDestination, Plan } from "@/types/plan";
 
 interface ApiResponse<T> {
@@ -30,8 +30,13 @@ export const plansApi = createApi({
 
     // multipart/form-data: planCode, months, transferNumber, companyId?, screenshot?
     submitPayment: builder.mutation<{ id: string; status: string }, FormData>({
-      query: (formData) => ({ url: "/api/v1/payments", method: "POST", body: formData }),
-      transformResponse: (r: ApiResponse<{ id: string; status: string }>) => r.data,
+      query: (formData) => ({
+        url: "/api/v1/payments",
+        method: "POST",
+        body: formData,
+      }),
+      transformResponse: (r: ApiResponse<{ id: string; status: string }>) =>
+        r.data,
       invalidatesTags: ["Payment"],
     }),
   }),
