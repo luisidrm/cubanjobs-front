@@ -1,13 +1,21 @@
 "use client";
 
+import * as Sentry from "@sentry/nextjs";
+import { useEffect } from "react";
+
 // Last resort: only renders when the root layout itself fails, so it can't use
 // the app providers, i18n or the design-system components. Plain and bilingual.
 export default function GlobalError({
+  error,
   reset,
 }: {
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => {
+    Sentry.captureException(error);
+  }, [error]);
+
   return (
     <html lang="es">
       <body
