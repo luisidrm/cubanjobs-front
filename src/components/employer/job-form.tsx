@@ -75,6 +75,7 @@ export function JobForm({ jobId }: { jobId?: string }) {
   const [currency, setCurrency] = useState<Currency>("CUP");
   const [location, setLocation] = useState("");
   const [jobType, setJobType] = useState<JobType | undefined>(undefined);
+  const [contactWhatsapp, setContactWhatsapp] = useState("");
   const [isRemote, setIsRemote] = useState(false);
   const [status, setStatus] = useState<JobStatus>("draft");
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -103,6 +104,7 @@ export function JobForm({ jobId }: { jobId?: string }) {
     setCurrency(existing.currency ?? "CUP");
     setLocation(existing.location ?? "");
     setJobType(existing.jobType ?? undefined);
+    setContactWhatsapp(existing.contactWhatsapp ?? "");
     setIsRemote(existing.isRemote);
     setStatus(existing.status);
   }, [existing]);
@@ -167,6 +169,8 @@ export function JobForm({ jobId }: { jobId?: string }) {
       currency,
       location: location.trim() || undefined,
       jobType,
+      // null clears a number that was removed while editing.
+      contactWhatsapp: contactWhatsapp.trim() || null,
       isRemote,
       status,
     };
@@ -371,6 +375,22 @@ export function JobForm({ jobId }: { jobId?: string }) {
               placeholder={t("jobForm.locationPlaceholder")}
               maxLength={255}
             />
+          </div>
+
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="job-whatsapp">{t("jobForm.whatsapp")}</Label>
+            <Input
+              id="job-whatsapp"
+              type="tel"
+              inputMode="tel"
+              value={contactWhatsapp}
+              onChange={(e) => setContactWhatsapp(e.target.value)}
+              placeholder="+53 5555 5555"
+              maxLength={32}
+            />
+            <p className="pl-1 text-[13px] text-text-3">
+              {t("jobForm.whatsappHelp")}
+            </p>
           </div>
 
           <label className="flex min-h-13 cursor-pointer items-center justify-between gap-3 rounded-xl bg-card px-4 ring-1 ring-separator">

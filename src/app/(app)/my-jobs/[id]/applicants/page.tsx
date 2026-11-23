@@ -21,6 +21,7 @@ import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { getErrorMessage } from "@/lib/errors";
+import { whatsappChatUrl } from "@/lib/whatsapp";
 import {
   useGetApplicationsForJobQuery,
   useUpdateApplicationNotesMutation,
@@ -159,7 +160,7 @@ function ApplicantCard({
             render={
               // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
               <a
-                href={`https://wa.me/${whatsapp}`}
+                href={whatsappChatUrl(whatsapp)}
                 target="_blank"
                 rel="noreferrer"
               />

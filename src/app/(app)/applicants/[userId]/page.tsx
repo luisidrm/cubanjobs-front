@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSkillLabel } from "@/lib/skills";
+import { whatsappChatUrl } from "@/lib/whatsapp";
 import { useGetPublicProfileQuery } from "@/store/api/usersApi";
 
 /** Employer-facing view of an applicant (or talent-search result). */
@@ -85,7 +86,7 @@ export default function ApplicantProfilePage() {
                   render={
                     // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
                     <a
-                      href={`https://wa.me/${whatsapp}`}
+                      href={whatsappChatUrl(whatsapp)}
                       target="_blank"
                       rel="noreferrer"
                     />

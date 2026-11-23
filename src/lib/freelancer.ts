@@ -1,5 +1,6 @@
 import { isEmployeePlanActive } from "@/lib/plan-status";
 import { hasCandidateSearchAccess } from "@/lib/plans";
+import { whatsappChatUrl } from "@/lib/whatsapp";
 import { useGetMyCompaniesQuery } from "@/store/api/companiesApi";
 import { useGetMeQuery } from "@/store/api/usersApi";
 import type { FreelancerContact } from "@/types/freelancer";
@@ -50,7 +51,7 @@ export function contactLinks(c: FreelancerContact): ContactLink[] {
     out.push({
       key: "whatsapp",
       value: c.contactWhatsapp,
-      href: `https://wa.me/${c.contactWhatsapp.replace(/\D/g, "")}`,
+      href: whatsappChatUrl(c.contactWhatsapp),
     });
   }
   if (c.contactEmail)

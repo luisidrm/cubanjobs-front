@@ -33,3 +33,14 @@ export const fetchPublicJob = cache((id: string) =>
 export function fetchPublicJobs(limit: number, offset: number) {
   return getJson<Job[]>(`/api/v1/jobs?limit=${limit}&offset=${offset}`);
 }
+
+export interface PublicCompany {
+  id: string;
+  name: string;
+  description: string | null;
+  logoUrl: string | null;
+}
+
+export const fetchPublicCompany = cache((id: string) =>
+  getJson<PublicCompany>(`/api/v1/companies/${encodeURIComponent(id)}`),
+);

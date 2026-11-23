@@ -8,6 +8,7 @@ import {
   Clock,
   Globe,
   MapPin,
+  MessageCircle,
   Send,
   WifiOff,
 } from "lucide-react";
@@ -31,9 +32,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { EmptyState } from "@/components/ui/empty-state";
+import { ShareButton } from "@/components/ui/share-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { isEmployeePlanActive } from "@/lib/plan-status";
 import { useSession } from "@/lib/session";
+import { whatsappChatUrl } from "@/lib/whatsapp";
 import {
   useApplyToJobMutation,
   useGetMyApplicationsQuery,
@@ -125,15 +128,26 @@ export default function JobDetailPage() {
         >
           <ArrowLeft />
         </Button>
-        <Button
-          variant={isSaved ? "default" : "glass"}
-          size="icon"
-          aria-label={isSaved ? "Unsave" : "Save"}
-          aria-pressed={isSaved}
-          onClick={handleSave}
-        >
-          {isSaved ? <BookmarkCheck /> : <Bookmark />}
-        </Button>
+        <div className="flex items-center gap-2">
+          {job ? (
+            <ShareButton
+              title={job.title}
+              text={t("share.job", {
+                title: job.title,
+                company: job.company.name,
+              })}
+            />
+          ) : null}
+          <Button
+            variant={isSaved ? "default" : "glass"}
+            size="icon"
+            aria-label={isSaved ? "Unsave" : "Save"}
+            aria-pressed={isSaved}
+            onClick={handleSave}
+          >
+            {isSaved ? <BookmarkCheck /> : <Bookmark />}
+          </Button>
+        </div>
       </div>
 
       {isLoading ? (
@@ -251,6 +265,27 @@ export default function JobDetailPage() {
           </section>
 
           <ActionBar>
+            {job.contactWhatsapp ? (
+              <Button
+                size="lg"
+                variant="secondary"
+                nativeButton={false}
+                render={
+                  // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
+                  <a
+                    href={whatsappChatUrl(
+                      job.contactWhatsapp,
+                      t("jobDetails.whatsappMessage", { title: job.title }),
+                    )}
+                    target="_blank"
+                    rel="noreferrer"
+                  />
+                }
+              >
+                <MessageCircle />
+                {t("jobDetails.contactWhatsapp")}
+              </Button>
+            ) : null}
             <Button
               size="lg"
               className="w-full"

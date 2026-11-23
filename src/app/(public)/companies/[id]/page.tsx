@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { JobCard } from "@/components/jobs/job-card";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
+import { ShareButton } from "@/components/ui/share-button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useGetCompanyByIdQuery } from "@/store/api/companiesApi";
 import { useSearchJobsQuery } from "@/store/api/jobsApi";
@@ -34,7 +35,7 @@ export default function CompanyPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pt-6 pb-16 sm:px-6">
-      <div>
+      <div className="flex items-center justify-between">
         <Button
           variant="glass"
           size="icon"
@@ -44,6 +45,12 @@ export default function CompanyPage() {
         >
           <ArrowLeft />
         </Button>
+        {company ? (
+          <ShareButton
+            title={company.name}
+            text={t("share.company", { company: company.name })}
+          />
+        ) : null}
       </div>
 
       {isLoading ? (
