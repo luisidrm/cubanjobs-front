@@ -287,6 +287,7 @@ export default function PlansPage() {
                 const on = pl.code === plan.code;
                 const first = pl.prices[0];
                 return (
+                  // biome-ignore lint/a11y/useSemanticElements: a card-style radio; a native input cannot hold this layout
                   <button
                     key={pl.code}
                     type="button"

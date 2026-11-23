@@ -130,6 +130,7 @@ export default function FreelancerPostPage() {
               className="self-start"
               nativeButton={false}
               render={
+                // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
                 <a
                   href={post.linkUrl}
                   target="_blank"
@@ -154,6 +155,7 @@ export default function FreelancerPostPage() {
                     variant="secondary"
                     nativeButton={false}
                     render={
+                      // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
                       <a
                         href={c.href}
                         target={external ? "_blank" : undefined}

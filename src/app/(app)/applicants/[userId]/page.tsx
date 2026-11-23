@@ -83,6 +83,7 @@ export default function ApplicantProfilePage() {
                   size="sm"
                   nativeButton={false}
                   render={
+                    // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
                     <a
                       href={`https://wa.me/${whatsapp}`}
                       target="_blank"
@@ -100,6 +101,7 @@ export default function ApplicantProfilePage() {
                   size="sm"
                   nativeButton={false}
                   render={
+                    // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
                     <a
                       href={profile.linkedinUrl}
                       target="_blank"

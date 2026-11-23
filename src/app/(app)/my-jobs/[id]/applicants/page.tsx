@@ -135,6 +135,7 @@ function ApplicantCard({
           size="sm"
           nativeButton={false}
           render={
+            // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
             <a href={application.resumeUrl} target="_blank" rel="noreferrer" />
           }
         >
@@ -156,6 +157,7 @@ function ApplicantCard({
             size="sm"
             nativeButton={false}
             render={
+              // biome-ignore lint/a11y/useAnchorContent: Button renders its children inside this anchor
               <a
                 href={`https://wa.me/${whatsapp}`}
                 target="_blank"
