@@ -572,7 +572,8 @@
       "none": "No date",
       "reviewed": "Reviewed",
       "copy": "Copy",
-      "copied": "Copied"
+      "copied": "Copied",
+      "pick": "Pick a payment to see its details."
     },
     "source": {
       "none": "No plan",

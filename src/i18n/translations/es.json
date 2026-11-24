@@ -572,7 +572,8 @@
       "none": "Sin fecha",
       "reviewed": "Revisado",
       "copy": "Copiar",
-      "copied": "Copiado"
+      "copied": "Copiado",
+      "pick": "Elige un pago para ver los detalles."
     },
     "source": {
       "none": "Sin plan",

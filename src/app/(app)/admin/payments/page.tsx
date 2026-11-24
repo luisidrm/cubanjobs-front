@@ -153,12 +153,12 @@ export default function AdminPaymentsPage() {
               id={selected}
               onDone={() => setSelected(null)}
             />
-          ) : (
-            <EmptyState
-              icon={CheckCheck}
-              message={t("adminPay.detail.title")}
-            />
-          )}
+          ) : data && data.items.length > 0 ? (
+            // Only hint at picking something when there is something to pick.
+            <div className="grid min-h-48 place-items-center rounded-xl border border-dashed border-border-1 p-6 text-center text-[15px] text-text-3">
+              {t("adminPay.detail.pick")}
+            </div>
+          ) : null}
         </aside>
       </div>
 
