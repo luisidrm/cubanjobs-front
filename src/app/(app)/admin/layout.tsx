@@ -3,6 +3,7 @@
 import {
   CalendarClock,
   CreditCard,
+  Flag,
   LayoutDashboard,
   Tags,
   Wrench,
@@ -14,11 +15,13 @@ import { useTranslation } from "react-i18next";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useGetAdminPaymentsQuery } from "@/store/api/adminPaymentsApi";
+import { useGetOpenReportsCountQuery } from "@/store/api/reportsApi";
 import { useGetMeQuery } from "@/store/api/usersApi";
 
 const NAV = [
   { href: "/admin", key: "overview", icon: LayoutDashboard },
   { href: "/admin/payments", key: "payments", icon: CreditCard },
+  { href: "/admin/reports", key: "reports", icon: Flag },
   { href: "/admin/accounts", key: "accounts", icon: CalendarClock },
   { href: "/admin/plans", key: "plans", icon: Tags },
   { href: "/admin/tools", key: "tools", icon: Wrench },
@@ -45,6 +48,14 @@ export default function AdminLayout({
     pollingInterval: 60_000,
   });
   const pendingCount = pending?.pending ?? 0;
+  const { data: openReports } = useGetOpenReportsCountQuery(undefined, {
+    skip: !isAdmin,
+    pollingInterval: 60_000,
+  });
+  const reportsCount = openReports ?? 0;
+
+  const badgeFor = (key: string) =>
+    key === "payments" ? pendingCount : key === "reports" ? reportsCount : 0;
 
   useEffect(() => {
     if (!isLoading && me && me.role !== "admin") router.replace("/");
@@ -86,14 +97,14 @@ export default function AdminLayout({
             >
               <item.icon className="size-[18px]" />
               <span className="flex-1">{t(`adminPay.nav.${item.key}`)}</span>
-              {item.key === "payments" && pendingCount > 0 ? (
+              {badgeFor(item.key) > 0 ? (
                 <span
                   className={cn(
                     "min-w-5 rounded-full px-1.5 text-center text-xs font-semibold tabular-nums",
                     on ? "bg-white/25" : "bg-primary text-primary-foreground",
                   )}
                 >
-                  {pendingCount}
+                  {badgeFor(item.key)}
                 </span>
               ) : null}
             </Link>

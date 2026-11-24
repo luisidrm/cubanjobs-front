@@ -19,6 +19,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { CompanyLogo } from "@/components/jobs/company-logo";
 import { GuestDialog } from "@/components/jobs/guest-dialog";
+import { ReportButton } from "@/components/report-button";
 import { ActionBar } from "@/components/ui/action-bar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -138,6 +139,7 @@ export default function JobDetailPage() {
               })}
             />
           ) : null}
+          {job ? <ReportButton targetType="job" targetId={job.id} /> : null}
           <Button
             variant={isSaved ? "default" : "glass"}
             size="icon"

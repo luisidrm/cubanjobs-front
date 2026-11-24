@@ -26,6 +26,7 @@ import { freelancerApi } from "./api/freelancerApi";
 import { jobsApi } from "./api/jobsApi";
 import { notificationsApi } from "./api/notificationsApi";
 import { plansApi } from "./api/plansApi";
+import { reportsApi } from "./api/reportsApi";
 import { savedJobsApi } from "./api/savedJobsApi";
 import { usersApi } from "./api/usersApi";
 import authReducer from "./slices/authSlice";
@@ -65,6 +66,7 @@ const rootReducer = combineReducers({
   [adminPaymentsApi.reducerPath]: adminPaymentsApi.reducer,
   [plansApi.reducerPath]: plansApi.reducer,
   [freelancerApi.reducerPath]: freelancerApi.reducer,
+  [reportsApi.reducerPath]: reportsApi.reducer,
 });
 
 // 3. Persist Config
@@ -99,6 +101,7 @@ export const store = configureStore({
       adminPaymentsApi.middleware,
       plansApi.middleware,
       freelancerApi.middleware,
+      reportsApi.middleware,
     ),
 });
 

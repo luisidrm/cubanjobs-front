@@ -16,6 +16,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BackButton } from "@/components/layout/back-button";
+import { ReportButton } from "@/components/report-button";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -104,7 +105,13 @@ export default function FreelancerPostPage() {
                   <Pencil />
                   {t("freelancers.editPost")}
                 </Button>
-              ) : null}
+              ) : (
+                <ReportButton
+                  targetType="freelancer_post"
+                  targetId={post.id}
+                  variant="secondary"
+                />
+              )}
             </div>
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-text-3">
               <span>

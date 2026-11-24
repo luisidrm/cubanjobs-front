@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import { JobCard } from "@/components/jobs/job-card";
+import { ReportButton } from "@/components/report-button";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ShareButton } from "@/components/ui/share-button";
@@ -46,10 +47,13 @@ export default function CompanyPage() {
           <ArrowLeft />
         </Button>
         {company ? (
-          <ShareButton
-            title={company.name}
-            text={t("share.company", { company: company.name })}
-          />
+          <div className="flex items-center gap-2">
+            <ShareButton
+              title={company.name}
+              text={t("share.company", { company: company.name })}
+            />
+            <ReportButton targetType="company" targetId={company.id} />
+          </div>
         ) : null}
       </div>
 
