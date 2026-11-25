@@ -176,17 +176,23 @@ export function JobForm({ jobId }: { jobId?: string }) {
     };
 
     try {
+      let warnings: string[] = [];
       if (isEdit && jobId) {
-        await updateJob({ id: jobId, ...payload }).unwrap();
+        warnings = (await updateJob({ id: jobId, ...payload }).unwrap())
+          .warnings;
         await syncCover(jobId);
       } else {
         const created = await createJob({
           companyId: company.id,
           ...payload,
         }).unwrap();
+        warnings = created.warnings;
         await syncCover(created.id);
       }
       toast.success(t("employer.jobSaved"));
+      if (warnings.includes("upfront_payment")) {
+        toast.warning(t("jobForm.upfrontWarning"), { duration: 10000 });
+      }
       router.push("/my-jobs");
     } catch (err) {
       toast.error(getErrorMessage(err, t("jobForm.saveError")));

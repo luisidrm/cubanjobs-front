@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, BookmarkCheck, MapPin } from "lucide-react";
+import { BadgeCheck, Bookmark, BookmarkCheck, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { CompanyLogo } from "@/components/jobs/company-logo";
@@ -57,8 +57,14 @@ export function JobCard({
               {job.title}
             </Link>
           </h3>
-          <p className="truncate text-sm text-muted-foreground">
-            {job.company?.name ?? ""}
+          <p className="flex min-w-0 items-center gap-1 text-sm text-muted-foreground">
+            <span className="truncate">{job.company?.name ?? ""}</span>
+            {job.company?.isVerified ? (
+              <BadgeCheck
+                className="size-4 shrink-0 text-primary"
+                aria-label={t("explore.verifiedCompany")}
+              />
+            ) : null}
           </p>
         </div>
         {onToggleSave ? (

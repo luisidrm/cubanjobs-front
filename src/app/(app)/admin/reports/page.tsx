@@ -150,7 +150,10 @@ export default function AdminReportsPage() {
               ) : null}
 
               <p className="text-[13px] text-text-3">
-                {t("adminReports.reportedBy", { email: r.reporterEmail })} ·{" "}
+                {r.reporterEmail
+                  ? t("adminReports.reportedBy", { email: r.reporterEmail })
+                  : t("adminReports.system")}{" "}
+                ·{" "}
                 {new Date(r.createdAt).toLocaleDateString(i18n.language, {
                   day: "numeric",
                   month: "short",

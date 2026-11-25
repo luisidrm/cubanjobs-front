@@ -2,6 +2,7 @@
 
 import {
   ArrowLeft,
+  BadgeCheck,
   Bookmark,
   BookmarkCheck,
   Check,
@@ -211,6 +212,12 @@ export default function JobDetailPage() {
                   className="size-8 rounded-lg text-sm"
                 />
                 {job.company.name}
+                {job.company.isVerified ? (
+                  <BadgeCheck
+                    className="size-5 shrink-0 text-primary"
+                    aria-label={t("explore.verifiedCompany")}
+                  />
+                ) : null}
               </Link>
             ) : null}
           </div>
