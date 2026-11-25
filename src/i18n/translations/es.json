@@ -830,7 +830,12 @@
       "saved": "Cambios guardados",
       "deleted": "Publicación eliminada",
       "imageFailed": "No se pudo subir esa foto.",
-      "saveFailed": "No se pudo guardar la publicación."
+      "saveFailed": "No se pudo guardar la publicación.",
+      "aboutTitle": "Tu servicio",
+      "addPhotos": "Añade fotos de tu trabajo",
+      "dropHint": "Arrástralas aquí o toca para elegir",
+      "cover": "Portada",
+      "imageRejected": "Solo fotos JPG, PNG o WebP de hasta 5 MB."
     },
     "detail": {
       "contact": "Contacto",

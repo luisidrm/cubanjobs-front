@@ -19,7 +19,14 @@ export function goBackOr(
  * notification or a new tab has no history, so a bare `router.back()` would do
  * nothing (or leave the app); `fallback` keeps the user inside it.
  */
-export function BackButton({ fallback }: { fallback: string }) {
+export function BackButton({
+  fallback,
+  toParent = false,
+}: {
+  fallback: string;
+  /** Always go to `fallback`, for pages that history may reach after a form was submitted. */
+  toParent?: boolean;
+}) {
   const { t } = useTranslation();
   const router = useRouter();
   return (
@@ -28,7 +35,9 @@ export function BackButton({ fallback }: { fallback: string }) {
         variant="glass"
         size="icon"
         aria-label={t("common.back")}
-        onClick={() => goBackOr(router, fallback)}
+        onClick={() =>
+          toParent ? router.replace(fallback) : goBackOr(router, fallback)
+        }
       >
         <ArrowLeft />
       </Button>

@@ -830,7 +830,12 @@
       "saved": "Changes saved",
       "deleted": "Post deleted",
       "imageFailed": "Couldn't upload that photo.",
-      "saveFailed": "Couldn't save the post."
+      "saveFailed": "Couldn't save the post.",
+      "aboutTitle": "Your service",
+      "addPhotos": "Add photos of your work",
+      "dropHint": "Drag them here or tap to choose",
+      "cover": "Cover",
+      "imageRejected": "Only JPG, PNG or WebP photos up to 5 MB."
     },
     "detail": {
       "contact": "Contact",

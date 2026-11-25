@@ -51,7 +51,7 @@ export default function MyFreelancerPostsPage() {
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 pt-8 pb-16 sm:px-6">
-      <BackButton fallback="/freelancers" />
+      <BackButton fallback="/freelancers" toParent />
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="flex flex-col gap-1">
           <h1 className="text-4xl">{t("freelancers.mine.title")}</h1>
