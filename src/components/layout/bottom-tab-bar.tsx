@@ -20,7 +20,7 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AccountAvatar } from "@/components/layout/account-avatar";
 import { isBottomBarHidden } from "@/lib/bottom-bar";
 import { useSession } from "@/lib/session";
 import { cn } from "@/lib/utils";
@@ -77,8 +77,7 @@ export function BottomTabBar() {
       { href: "/talent", label: t("tabs.exploreWorkers"), icon: Users },
       { href: "/freelancers", label: t("tabs.freelancers"), icon: Handshake },
       { href: "/team", label: t("tabs.team"), icon: UserPlus },
-      // /profile sends employers on to their company page.
-      { href: "/company", label: t("tabs.profile"), icon: User, avatar: true },
+      { href: "/profile", label: t("tabs.profile"), icon: User, avatar: true },
     ];
   } else if (isAdmin) {
     // The same five links as the console's sidebar.
@@ -137,20 +136,10 @@ export function BottomTabBar() {
                   )}
                 >
                   {tab.avatar && me ? (
-                    <Avatar
+                    <AccountAvatar
                       size="sm"
                       className={cn("size-6", active && "ring-2 ring-primary")}
-                    >
-                      <AvatarImage
-                        src={me.profilePictureUrl ?? undefined}
-                        alt=""
-                      />
-                      <AvatarFallback>
-                        {(me.firstName ?? me.email ?? "?")
-                          .charAt(0)
-                          .toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
+                    />
                   ) : (
                     <Icon className="size-5.5" aria-hidden />
                   )}

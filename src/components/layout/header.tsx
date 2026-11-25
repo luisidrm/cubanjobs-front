@@ -5,10 +5,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTranslation } from "react-i18next";
 import Session from "supertokens-web-js/recipe/session";
+import { AccountAvatar } from "@/components/layout/account-avatar";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { Logo } from "@/components/layout/wordmark";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -139,13 +139,24 @@ export function Header() {
                         size="icon"
                         aria-label={t("tabs.profile")}
                       >
-                        <Avatar size="sm">
-                          <AvatarFallback>?</AvatarFallback>
-                        </Avatar>
+                        <AccountAvatar />
                       </Button>
                     }
                   />
-                  <DropdownMenuContent align="end">
+                  <DropdownMenuContent align="end" className="min-w-52">
+                    {/* Who is signed in. */}
+                    {me ? (
+                      <div className="flex flex-col px-2 py-1.5">
+                        <span className="truncate text-sm font-semibold">
+                          {[me.firstName, me.lastName]
+                            .filter(Boolean)
+                            .join(" ") || me.email}
+                        </span>
+                        <span className="truncate text-xs text-muted-foreground">
+                          {me.email}
+                        </span>
+                      </div>
+                    ) : null}
                     {me?.role === "employee" ? (
                       <>
                         <DropdownMenuItem render={<Link href="/profile" />}>
@@ -158,6 +169,9 @@ export function Header() {
                     ) : null}
                     {me?.role === "employer" ? (
                       <>
+                        <DropdownMenuItem render={<Link href="/profile" />}>
+                          {t("tabs.profile")}
+                        </DropdownMenuItem>
                         <DropdownMenuItem render={<Link href="/my-jobs" />}>
                           {t("tabs.myJobs")}
                         </DropdownMenuItem>

@@ -1,7 +1,9 @@
 "use client";
 
 import {
+  Building2,
   Camera,
+  ChevronRight,
   CreditCard,
   FileText,
   Pencil,
@@ -123,10 +125,9 @@ export default function ProfilePage() {
   const [expDelete, setExpDelete] = useState<WorkExperience | null>(null);
   const [confirmDeleteAccount, setConfirmDeleteAccount] = useState(false);
 
-  // Employers and admins have their own home; this page is the employee profile.
+  // Employees and employers manage their own account here; admins have the console.
   useEffect(() => {
-    if (me?.role === "employer") router.replace("/company");
-    else if (me?.role === "admin") router.replace("/admin");
+    if (me?.role === "admin") router.replace("/admin");
   }, [me?.role, router]);
 
   // Fill the form once the profile has loaded.
@@ -289,7 +290,7 @@ export default function ProfilePage() {
     );
   }
 
-  if (isLoading || !me || me.role !== "employee") {
+  if (isLoading || !me || me.role === "admin") {
     return (
       <div className="mx-auto flex w-full max-w-2xl flex-col gap-4 px-4 pt-8 sm:px-6">
         <Skeleton className="h-28 rounded-xl" />
@@ -298,6 +299,8 @@ export default function ProfilePage() {
     );
   }
 
+  // CV, skills, experience and the personal plan only mean something for job seekers.
+  const isEmployee = me.role === "employee";
   const fullName =
     [me.firstName, me.lastName].filter(Boolean).join(" ") || me.email;
   const planActive = isEmployeePlanActive(me);
@@ -347,43 +350,60 @@ export default function ProfilePage() {
         </div>
       </section>
 
-      <Link
-        href="/plans"
-        className="flex items-center gap-3 rounded-xl bg-card p-4 ring-1 ring-separator transition-colors hover:bg-fill-1"
-      >
-        <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent-text">
-          <CreditCard className="size-5" />
-        </span>
-        <span className="min-w-0 flex-1">
-          <span className="block font-semibold">{t("plans.title")}</span>
-          <span className="block text-[13px] text-muted-foreground">
-            {planActive
-              ? me.planExpiresAt
-                ? t("plans.activeUntil", {
-                    date: new Date(me.planExpiresAt).toLocaleDateString(
-                      i18n.language,
-                      {
-                        day: "numeric",
-                        month: "long",
-                      },
-                    ),
-                  })
-                : t("plans.noExpiry")
-              : t("plans.profileRow")}
-          </span>
-        </span>
-        <Badge
-          variant={
-            planActive
-              ? planDays !== null && planDays <= 3
-                ? "warning"
-                : "success"
-              : "ghost"
-          }
+      {!isEmployee ? (
+        <Link
+          href="/company"
+          className="flex items-center gap-3 rounded-xl bg-card p-4 ring-1 ring-separator transition-colors hover:bg-fill-1"
         >
-          {planActive ? t("plans.paid") : t("plans.free")}
-        </Badge>
-      </Link>
+          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent-text">
+            <Building2 className="size-5" />
+          </span>
+          <span className="min-w-0 flex-1 font-semibold">
+            {t("employer.myCompany")}
+          </span>
+          <ChevronRight className="size-5 text-text-3" />
+        </Link>
+      ) : null}
+
+      {isEmployee ? (
+        <Link
+          href="/plans"
+          className="flex items-center gap-3 rounded-xl bg-card p-4 ring-1 ring-separator transition-colors hover:bg-fill-1"
+        >
+          <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent-soft text-accent-text">
+            <CreditCard className="size-5" />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block font-semibold">{t("plans.title")}</span>
+            <span className="block text-[13px] text-muted-foreground">
+              {planActive
+                ? me.planExpiresAt
+                  ? t("plans.activeUntil", {
+                      date: new Date(me.planExpiresAt).toLocaleDateString(
+                        i18n.language,
+                        {
+                          day: "numeric",
+                          month: "long",
+                        },
+                      ),
+                    })
+                  : t("plans.noExpiry")
+                : t("plans.profileRow")}
+            </span>
+          </span>
+          <Badge
+            variant={
+              planActive
+                ? planDays !== null && planDays <= 3
+                  ? "warning"
+                  : "success"
+                : "ghost"
+            }
+          >
+            {planActive ? t("plans.paid") : t("plans.free")}
+          </Badge>
+        </Link>
+      ) : null}
 
       <Section title={t("profile.editProfile.title")}>
         <form onSubmit={handleSave} className="flex flex-col gap-4">
@@ -462,137 +482,143 @@ export default function ProfilePage() {
         </form>
       </Section>
 
-      <Section title={t("onboarding.cvTitle")}>
-        <p className="text-[15px] text-muted-foreground">
-          {me.cvUrl ? t("onboarding.cvUploaded") : t("onboarding.cvSubtitle")}
-        </p>
-        <div className="flex flex-wrap gap-2">
-          {me.cvUrl ? (
-            <Button variant="secondary" size="sm" onClick={openCv}>
-              <FileText />
-              {t("jobApplicants.viewResume")}
-            </Button>
-          ) : null}
-          <Button
-            variant={me.cvUrl ? "ghost" : "default"}
-            size="sm"
-            disabled={uploadingCv}
-            nativeButton={false}
-            render={
-              <label>
-                <Upload />
-                {uploadingCv
-                  ? t("onboarding.uploading")
-                  : me.cvUrl
-                    ? t("onboarding.replace")
-                    : t("onboarding.uploadCv")}
-                <input
-                  type="file"
-                  accept="application/pdf"
-                  className="sr-only"
-                  onChange={handleCv}
+      {isEmployee ? (
+        <>
+          <Section title={t("onboarding.cvTitle")}>
+            <p className="text-[15px] text-muted-foreground">
+              {me.cvUrl
+                ? t("onboarding.cvUploaded")
+                : t("onboarding.cvSubtitle")}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {me.cvUrl ? (
+                <Button variant="secondary" size="sm" onClick={openCv}>
+                  <FileText />
+                  {t("jobApplicants.viewResume")}
+                </Button>
+              ) : null}
+              <Button
+                variant={me.cvUrl ? "ghost" : "default"}
+                size="sm"
+                disabled={uploadingCv}
+                nativeButton={false}
+                render={
+                  <label>
+                    <Upload />
+                    {uploadingCv
+                      ? t("onboarding.uploading")
+                      : me.cvUrl
+                        ? t("onboarding.replace")
+                        : t("onboarding.uploadCv")}
+                    <input
+                      type="file"
+                      accept="application/pdf"
+                      className="sr-only"
+                      onChange={handleCv}
+                    />
+                  </label>
+                }
+              />
+            </div>
+          </Section>
+
+          <Section title={t("onboarding.stepSkills")}>
+            <div className="flex flex-wrap gap-2">
+              {me.skills.map((s) => (
+                <Chip
+                  key={s.id}
+                  variant="removable"
+                  label={
+                    s.yearsExperience
+                      ? `${skillLabel(s.skill)} · ${s.yearsExperience}`
+                      : skillLabel(s.skill)
+                  }
+                  removeLabel={t("onboarding.remove")}
+                  onRemove={() => removeSkill(s.id)}
                 />
-              </label>
-            }
-          />
-        </div>
-      </Section>
+              ))}
+            </div>
+            <form onSubmit={handleAddSkill} className="flex gap-2">
+              <Input
+                list="skill-suggestions"
+                value={skillText}
+                onChange={(e) => setSkillText(e.target.value)}
+                placeholder={t("profile.workExperience.skillPlaceholder")}
+                aria-label={t("profile.addSkill")}
+                maxLength={100}
+              />
+              <datalist id="skill-suggestions">
+                {suggestions.map((c) => (
+                  <option key={c.id} value={skillLabel(c.name)} />
+                ))}
+              </datalist>
+              <Button type="submit" disabled={!skillText.trim() || addingSkill}>
+                <Plus />
+                {t("onboarding.add")}
+              </Button>
+            </form>
+          </Section>
 
-      <Section title={t("onboarding.stepSkills")}>
-        <div className="flex flex-wrap gap-2">
-          {me.skills.map((s) => (
-            <Chip
-              key={s.id}
-              variant="removable"
-              label={
-                s.yearsExperience
-                  ? `${skillLabel(s.skill)} · ${s.yearsExperience}`
-                  : skillLabel(s.skill)
-              }
-              removeLabel={t("onboarding.remove")}
-              onRemove={() => removeSkill(s.id)}
-            />
-          ))}
-        </div>
-        <form onSubmit={handleAddSkill} className="flex gap-2">
-          <Input
-            list="skill-suggestions"
-            value={skillText}
-            onChange={(e) => setSkillText(e.target.value)}
-            placeholder={t("profile.workExperience.skillPlaceholder")}
-            aria-label={t("profile.addSkill")}
-            maxLength={100}
-          />
-          <datalist id="skill-suggestions">
-            {suggestions.map((c) => (
-              <option key={c.id} value={skillLabel(c.name)} />
-            ))}
-          </datalist>
-          <Button type="submit" disabled={!skillText.trim() || addingSkill}>
-            <Plus />
-            {t("onboarding.add")}
-          </Button>
-        </form>
-      </Section>
-
-      <Section
-        title={t("profile.workExperience.title")}
-        action={
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={() => openExperience("new")}
-          >
-            <Plus />
-            {t("profile.workExperience.add")}
-          </Button>
-        }
-      >
-        {me.experience.length === 0 ? (
-          <p className="text-[15px] text-muted-foreground">
-            {t("profile.workExperience.count", { count: 0 })}
-          </p>
-        ) : (
-          <ul className="flex flex-col divide-y divide-separator">
-            {me.experience.map((exp) => (
-              <li
-                key={exp.id}
-                className="flex items-start gap-3 py-3 first:pt-0 last:pb-0"
+          <Section
+            title={t("profile.workExperience.title")}
+            action={
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={() => openExperience("new")}
               >
-                <div className="min-w-0 flex-1">
-                  <p className="font-semibold">{exp.title}</p>
-                  {exp.organization ? (
-                    <p className="text-[15px] text-muted-foreground">
-                      {exp.organization}
-                    </p>
-                  ) : null}
-                  {exp.description ? (
-                    <p className="mt-1 whitespace-pre-line text-[14px] text-text-3">
-                      {exp.description}
-                    </p>
-                  ) : null}
-                </div>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t("employer.edit")}
-                  onClick={() => openExperience(exp)}
-                >
-                  <Pencil />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  aria-label={t("profile.workExperience.remove")}
-                  onClick={() => setExpDelete(exp)}
-                >
-                  <Trash2 className="text-destructive" />
-                </Button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </Section>
+                <Plus />
+                {t("profile.workExperience.add")}
+              </Button>
+            }
+          >
+            {me.experience.length === 0 ? (
+              <p className="text-[15px] text-muted-foreground">
+                {t("profile.workExperience.count", { count: 0 })}
+              </p>
+            ) : (
+              <ul className="flex flex-col divide-y divide-separator">
+                {me.experience.map((exp) => (
+                  <li
+                    key={exp.id}
+                    className="flex items-start gap-3 py-3 first:pt-0 last:pb-0"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold">{exp.title}</p>
+                      {exp.organization ? (
+                        <p className="text-[15px] text-muted-foreground">
+                          {exp.organization}
+                        </p>
+                      ) : null}
+                      {exp.description ? (
+                        <p className="mt-1 whitespace-pre-line text-[14px] text-text-3">
+                          {exp.description}
+                        </p>
+                      ) : null}
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={t("employer.edit")}
+                      onClick={() => openExperience(exp)}
+                    >
+                      <Pencil />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={t("profile.workExperience.remove")}
+                      onClick={() => setExpDelete(exp)}
+                    >
+                      <Trash2 className="text-destructive" />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Section>
+        </>
+      ) : null}
 
       <Section title={t("profile.deleteAccount")}>
         <Button

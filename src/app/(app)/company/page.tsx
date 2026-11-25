@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { JoinCompanyForm } from "@/components/employer/join-company-form";
 import { RenewalNotice } from "@/components/employer/renewal-notice";
+import { SignedInAs } from "@/components/employer/signed-in-as";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -108,6 +109,8 @@ export default function CompanyPage() {
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 pt-8 pb-16 sm:px-6">
       <h1 className="text-4xl">{t("companyProfile.title")}</h1>
+
+      <SignedInAs />
 
       {isLoading ? (
         <div className="flex flex-col gap-4">
