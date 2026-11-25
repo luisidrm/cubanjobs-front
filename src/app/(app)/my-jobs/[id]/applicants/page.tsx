@@ -36,16 +36,18 @@ import type {
 const SETTABLE: EmployerSettableStatus[] = [
   "pending",
   "reviewed",
+  "interview",
   "accepted",
   "rejected",
 ];
 
 const STATUS_VARIANT: Record<
   ApplicationStatus,
-  "ghost" | "info" | "success" | "destructive"
+  "ghost" | "info" | "warning" | "success" | "destructive"
 > = {
   pending: "ghost",
   reviewed: "info",
+  interview: "warning",
   accepted: "success",
   rejected: "destructive",
   withdrawn: "ghost",
@@ -181,7 +183,7 @@ function ApplicantCard({
               variant="filter"
               label={t(`applicationStatus.${s}`)}
               selected={application.status === s}
-              disabled={updating}
+              disabled={updating || application.status === "withdrawn"}
               onClick={() => setStatus(s)}
             />
           ))}
@@ -218,6 +220,13 @@ export default function JobApplicantsPage() {
     isError,
     refetch,
   } = useGetApplicationsForJobQuery(id);
+  // Pipeline view: one stage at a time, with a count on each.
+  const [stage, setStage] = useState<ApplicationStatus | "all">("all");
+  const visible = applications?.filter(
+    (a) => stage === "all" || a.status === stage,
+  );
+  const countOf = (s: ApplicationStatus) =>
+    applications?.filter((a) => a.status === s).length ?? 0;
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-6 px-4 pt-6 pb-16 sm:px-6">
@@ -258,8 +267,32 @@ export default function JobApplicantsPage() {
         <EmptyState icon={Users} message={t("jobApplicants.empty")} />
       ) : null}
 
+      {applications && applications.length > 0 ? (
+        <div className="flex flex-wrap gap-2">
+          <Chip
+            variant="filter"
+            label={`${t("jobApplicants.all")} (${applications.length})`}
+            selected={stage === "all"}
+            onClick={() => setStage("all")}
+          />
+          {SETTABLE.map((s) => (
+            <Chip
+              key={s}
+              variant="filter"
+              label={`${t(`applicationStatus.${s}`)} (${countOf(s)})`}
+              selected={stage === s}
+              onClick={() => setStage(s)}
+            />
+          ))}
+        </div>
+      ) : null}
+
+      {applications && applications.length > 0 && visible?.length === 0 ? (
+        <EmptyState icon={Users} message={t("jobApplicants.emptyStage")} />
+      ) : null}
+
       <ul className="flex flex-col gap-3">
-        {applications?.map((a) => (
+        {visible?.map((a) => (
           <ApplicantCard key={a.id} application={a} />
         ))}
       </ul>

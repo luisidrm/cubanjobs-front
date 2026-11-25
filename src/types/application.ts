@@ -1,6 +1,7 @@
 export type ApplicationStatus =
   | "pending"
   | "reviewed"
+  | "interview"
   | "rejected"
   | "accepted"
   | "withdrawn";

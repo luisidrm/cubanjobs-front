@@ -35,10 +35,11 @@ type Tab = "applications" | "saved";
 
 const STATUS_VARIANT: Record<
   ApplicationStatus,
-  "ghost" | "info" | "success" | "destructive"
+  "ghost" | "info" | "warning" | "success" | "destructive"
 > = {
   pending: "ghost",
   reviewed: "info",
+  interview: "warning",
   accepted: "success",
   rejected: "destructive",
   withdrawn: "ghost",
@@ -123,7 +124,9 @@ export default function ActivityPage() {
                       ),
                     })}
                   </span>
-                  {a.status === "pending" || a.status === "reviewed" ? (
+                  {a.status === "pending" ||
+                  a.status === "reviewed" ||
+                  a.status === "interview" ? (
                     <Button
                       variant="ghost"
                       size="sm"
